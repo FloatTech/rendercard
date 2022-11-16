@@ -17,6 +17,8 @@ const (
 
 // Titleinfo ...
 type Titleinfo struct {
+	Line int
+
 	Lefttitle    string
 	Leftsubtitle string
 
@@ -34,7 +36,7 @@ type Titleinfo struct {
 // Drawtitle ...
 func (t Titleinfo) Drawtitle() (imgs image.Image, err error) {
 	// 创建图像
-	canvas := gg.NewContext(int(Imgwight), 30+30+300+(9*(256+30)))
+	canvas := gg.NewContext(int(Imgwight), 30+30+300+(t.Line*(256+30)))
 	canvas.SetRGBA255(240, 240, 240, 255)
 	canvas.Clear()
 
@@ -86,8 +88,11 @@ func (t Titleinfo) Drawtitle() (imgs image.Image, err error) {
 
 // Drawtitledtext ...
 func (t Titleinfo) Drawtitledtext(info []string) (imgs []byte, err error) {
-
-	imgh := len(info)*(38+20) + 220 + 10 + 30 + 10 + 50
+	line := len(info) - 1
+	if line < 5 {
+		line = 5
+	}
+	imgh := line*(38+20) + 220 + 10 + 30 + 10 + 50
 
 	// 创建图像
 	canvas := gg.NewContext(int(Imgwight), imgh)
