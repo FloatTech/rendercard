@@ -51,7 +51,7 @@ type TextCardInfo struct {
 	FontOfText string
 	// 标题规格:标题内容
 	Title string
-	// 标题规格:标题布局[Left|Center|Right],默认Center
+	// 标题规格:标题布局[Left|Center|Right],默认Left
 	TitleSetting string
 	// 正文规格:正文内容
 	//
