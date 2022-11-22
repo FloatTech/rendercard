@@ -88,11 +88,11 @@ func (t Titleinfo) Drawtitle() (imgs image.Image, err error) {
 
 // Drawtitledtext ...
 func (t Titleinfo) Drawtitledtext(info []string) (imgs []byte, err error) {
-	line := len(info) - 1
-	if line < 5 {
-		line = 5
+	line := len(info)
+	if line < 6 {
+		line = 6
 	}
-	imgh := line*(38+20) + 220 + 10 + 30 + 10 + 50
+	imgh := line*(32+20) + 220 + 10 + 30 + 10 + 50
 
 	// 创建图像
 	canvas := gg.NewContext(int(Imgwight), imgh)
