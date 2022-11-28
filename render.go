@@ -13,7 +13,6 @@ import (
 	"github.com/Coloured-glaze/gg"
 	"github.com/FloatTech/floatbox/img/writer"
 	"github.com/FloatTech/zbputils/img"
-	"github.com/FloatTech/zbputils/img/text"
 )
 
 const (
@@ -270,7 +269,7 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 	var textImg image.Image
 	fontOfText := g.FontOfText
 	if fontOfText == "" {
-		fontOfText = text.SakuraFontFile
+		return nil, errors.New("请输入FontOfText参数")
 	}
 	// 正文数据的类型
 	switch g.Text.(type) {
@@ -354,7 +353,7 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 	if g.DisplayTitle {
 		fontOfTitle := g.FontOfTitle
 		if fontOfTitle == "" {
-			fontOfTitle = text.SakuraFontFile
+			return nil, errors.New("请输入FontOfText参数")
 		}
 		err = canvas.LoadFontFace(fontOfTitle, 103)
 		if err != nil {
