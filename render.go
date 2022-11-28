@@ -353,7 +353,7 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 	if g.DisplayTitle {
 		fontOfTitle := g.FontOfTitle
 		if fontOfTitle == "" {
-			return nil, errors.New("请输入FontOfText参数")
+			return nil, errors.New("请输入FontOfTitle参数")
 		}
 		err = canvas.LoadFontFace(fontOfTitle, 103)
 		if err != nil {
