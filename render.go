@@ -360,8 +360,8 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 			return
 		}
 		canvas.SetRGB(0, 0, 0)
-		var titleDx float64 = 10
-		var titleDy float64 = 90
+		var titleDx = 10.0
+		var titleDy = 90.0
 		switch g.TitleSetting {
 		case "Left":
 			_, titleDy = canvas.MeasureString(g.Title)
