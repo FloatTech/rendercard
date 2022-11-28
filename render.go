@@ -3,10 +3,8 @@ package rendercard
 
 import (
 	"errors"
-	"fmt"
 	"image"
 	"math/rand"
-	"reflect"
 	"strconv"
 	"strings"
 
@@ -57,15 +55,11 @@ type TextCardInfo struct {
 	// 标题规格:标题布局[Left|Center|Right],默认Left
 	TitleSetting string
 	// 正文规格:正文内容
-	//
-	// 仅支持类型:String,[]string,Struct{...string}
-	Text any
+	Text []string
 	// 正文规格:正文要求
 	//
-	// 当正文为数组时,true为每个元素按行显示,false按空格分割显示;
-	//
-	// 当正文为结构体时,true为显示key指
-	DisplaySetting bool
+	// true为每个元素按行显示,false按空格分割显示;
+	TextSetting bool
 }
 
 // Drawtitle ...
@@ -266,68 +260,22 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 		width = 600
 	}
 	// 根据宽度获取高度
-	textHigh := 0
-	var textImg image.Image
 	fontOfText := g.FontOfText
 	if fontOfText == "" {
 		return nil, errors.New("请输入FontOfText参数")
 	}
-	// 正文数据的类型
-	switch g.Text.(type) {
-	case string: // 纯文本
-		textImg, err = RenderText(fmt.Sprint(g.Text), fontOfText, width-80, 38)
-		if err != nil {
-			return
-		}
-		textHigh = textImg.Bounds().Max.Y
-	case []string: // 字符串数组
-		list, ok := g.Text.([]string) // 断言字符串数组
-		if !ok {
-			return nil, errors.New("不支持该类型类型")
-		}
-		textString := ""
-		if g.DisplaySetting {
-			textString = strings.Join(list, "\n")
-		} else {
-			textString = strings.Join(list, " ")
-		}
-		textImg, err = RenderText(textString, fontOfText, width-80, 38)
-		if err != nil {
-			return
-		}
-		textHigh = textImg.Bounds().Dy()
-	case struct{}: // 结构体
-		ref := reflect.TypeOf(g.Text)
-		value := reflect.ValueOf(g.Text)
-		var textinfo []string
-		for i := 0; i < ref.NumField(); i++ {
-			if g.DisplaySetting { // 获取key
-				textinfo = append(textinfo, ref.Field(i).Name)
-			}
-			switch ref.Field(i).Type.Kind() {
-			case reflect.Int: // value为int
-				textinfo = append(textinfo, strconv.Itoa(value.Field(i).Interface().(int)))
-			case reflect.Int64: // value为int64
-				textinfo = append(textinfo, strconv.FormatInt(value.Field(i).Interface().(int64), 10))
-			case reflect.Float64: // value为float64
-				textinfo = append(textinfo, strconv.FormatFloat(value.Field(i).Interface().(float64), 'f', 3, 64))
-			case reflect.String: // value为string
-				textinfo = append(textinfo, value.Field(i).Interface().(string))
-			case reflect.Bool: // value为bool
-				textinfo = append(textinfo, strconv.FormatBool(value.Field(i).Interface().(bool)))
-			default:
-				return nil, errors.New("不支持该类型类型")
-			}
-		}
-		textString := strings.Join(textinfo, "\n")
-		textImg, err = RenderText(textString, fontOfText, width-80, 38)
-		if err != nil {
-			return
-		}
-		textHigh = textImg.Bounds().Dy()
-	default:
-		return nil, errors.New("不支持该类型类型")
+	// 正文数据
+	textString := ""
+	if g.TextSetting {
+		textString = strings.Join(g.Text, "\n")
+	} else {
+		textString = strings.Join(g.Text, " ")
 	}
+	textImg, err := RenderText(textString, fontOfText, width-80, 38)
+	if err != nil {
+		return
+	}
+	textHigh := textImg.Bounds().Dy()
 	// 计算图片高度
 	imgHigh := g.High
 	if imgHigh == 0 {
