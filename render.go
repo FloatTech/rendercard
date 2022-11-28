@@ -362,19 +362,13 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 		}
 		canvas.SetRGB(0, 0, 0)
 		titleDx := 10.0
-		titleDy := 90.0
+		widthOfTilte, titleDy := canvas.MeasureString(g.Title)
 		switch g.TitleSetting {
 		case "Left":
-			_, h := canvas.MeasureString(g.Title)
-			titleDy = h
 		case "Center":
-			widthOfTilte, hightOfTilte := canvas.MeasureString(g.Title)
 			titleDx = (float64(width) - widthOfTilte) / 2
-			titleDy = hightOfTilte
 		case "Right":
-			widthOfTilte, hightOfTilte := canvas.MeasureString(g.Title)
 			titleDx = float64(width) - widthOfTilte
-			titleDy = hightOfTilte
 		default:
 			return nil, errors.New("TitleSetting 参数错误")
 		}
