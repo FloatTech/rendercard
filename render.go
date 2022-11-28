@@ -17,6 +17,7 @@ import (
 )
 
 const (
+	// Imgwight 图像宽
 	Imgwight = 1272.0
 )
 
