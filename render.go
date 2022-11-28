@@ -267,7 +267,7 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 	}
 	// 根据宽度获取高度
 	textHigh := 0
-	var textPic image.Image
+	var textImg image.Image
 	fontOfText := g.FontOfText
 	if fontOfText == "" {
 		fontOfText = text.SakuraFontFile
@@ -275,12 +275,11 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 	// 正文数据的类型
 	switch g.Text.(type) {
 	case string: // 纯文本
-		textImgInfo, err := text.Render(fmt.Sprint(g.Text), fontOfText, width-80, 38)
+		textImg, err = RenderText(fmt.Sprint(g.Text), fontOfText, width-80, 38)
 		if err != nil {
-			return nil, err
+			return
 		}
-		textPic = textImgInfo.Image()
-		textHigh = textPic.Bounds().Max.Y
+		textHigh = textImg.Bounds().Max.Y
 	case []string: // 字符串数组
 		list, ok := g.Text.([]string) // 断言字符串数组
 		if !ok {
@@ -292,13 +291,11 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 		} else {
 			textString = strings.Join(list, " ")
 		}
-		textImgInfo, testerr := text.Render(textString, fontOfText, width-80, 38)
-		if testerr != nil {
-			err = testerr
+		textImg, err = RenderText(textString, fontOfText, width-80, 38)
+		if err != nil {
 			return
 		}
-		textPic = textImgInfo.Image()
-		textHigh = textPic.Bounds().Dy()
+		textHigh = textImg.Bounds().Dy()
 	case struct{}: // 结构体
 		ref := reflect.TypeOf(g.Text)
 		value := reflect.ValueOf(g.Text)
@@ -323,13 +320,11 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 			}
 		}
 		textString := strings.Join(textinfo, "\n")
-		textImgInfo, testerr := text.Render(textString, fontOfText, width-80, 38)
-		if testerr != nil {
-			err = testerr
+		textImg, err = RenderText(textString, fontOfText, width-80, 38)
+		if err != nil {
 			return
 		}
-		textPic = textImgInfo.Image()
-		textHigh = textPic.Bounds().Dy()
+		textHigh = textImg.Bounds().Dy()
 	default:
 		return nil, errors.New("不支持该类型类型")
 	}
@@ -388,12 +383,46 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 		canvas.SetRGB(0, 0, 0)
 		canvas.Fill()
 		// 内容
-		canvas.DrawImage(textPic, 10, 130)
+		canvas.DrawImage(textImg, 10, 130)
 	} else {
 		// 内容
-		canvas.DrawImage(textPic, 10, 20)
+		canvas.DrawImage(textImg, 10, 20)
 	}
 	// 制图
 	imgForCard = canvas.Image()
 	return
+}
+
+// RenderText 文字转图片 width 是图片宽度
+func RenderText(text, font string, width, fontSize int) (txtPic image.Image, err error) {
+	canvas := gg.NewContext(width, fontSize) // fake
+	if err = canvas.LoadFontFace(font, float64(fontSize)); err != nil {
+		return
+	}
+	buff := make([]string, 0)
+	for _, s := range strings.Split(text, "\n") {
+		line := ""
+		for _, v := range s {
+			length, _ := canvas.MeasureString(line)
+			if int(length) <= width {
+				line += string(v)
+			} else {
+				buff = append(buff, line)
+				line = string(v)
+			}
+		}
+		buff = append(buff, line)
+	}
+	_, h := canvas.MeasureString("好")
+	canvas = gg.NewContext(width+int(h*2+0.5), int(float64(len(buff)*3+1)/2*h+0.5))
+	canvas.SetRGB(0, 0, 0)
+	if err = canvas.LoadFontFace(font, float64(fontSize)); err != nil {
+		return
+	}
+	for i, v := range buff {
+		if v != "" {
+			canvas.DrawString(v, float64(width)*0.01, float64((i+1)*3)/2*h)
+		}
+	}
+	return canvas.Image(), nil
 }
