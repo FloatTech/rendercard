@@ -38,6 +38,7 @@ type Titleinfo struct {
 	Status bool
 }
 
+// TextCardInfo ...
 type TextCardInfo struct {
 	// 卡片规格:宽度,默认600
 	Width int
@@ -258,7 +259,7 @@ func (t Titleinfo) Drawcard() (imgs image.Image, err error) {
 	return
 }
 
-// 绘制文字卡片
+// DrawTextCard 绘制文字卡片
 func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 	width := g.Width
 	if width == 0 {
@@ -360,11 +361,12 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 			return
 		}
 		canvas.SetRGB(0, 0, 0)
-		var titleDx = 10.0
-		var titleDy = 90.0
+		titleDx := 10.0
+		titleDy := 90.0
 		switch g.TitleSetting {
 		case "Left":
-			_, titleDy = canvas.MeasureString(g.Title)
+			_, h := canvas.MeasureString(g.Title)
+			titleDy = h
 		case "Center":
 			widthOfTilte, hightOfTilte := canvas.MeasureString(g.Title)
 			titleDx = (float64(width) - widthOfTilte) / 2
