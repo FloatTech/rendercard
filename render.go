@@ -17,6 +17,7 @@ import (
 )
 
 const (
+	// Imgwight 图像宽
 	Imgwight = 1272.0
 )
 
@@ -51,6 +52,8 @@ type TextCardInfo struct {
 	FontOfText string
 	// 标题规格:标题内容
 	Title string
+	// 是否显示标题
+	DisplayTitle bool
 	// 标题规格:标题布局[Left|Center|Right],默认Left
 	TitleSetting string
 	// 正文规格:正文内容
@@ -61,7 +64,7 @@ type TextCardInfo struct {
 	//
 	// 当正文为数组时,true为每个元素按行显示,false按空格分割显示;
 	//
-	//当正文为结构体时,true为显示key指
+	// 当正文为结构体时,true为显示key指
 	DisplaySetting bool
 }
 
@@ -257,7 +260,7 @@ func (t Titleinfo) Drawcard() (imgs image.Image, err error) {
 }
 
 // 绘制文字卡片
-func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, imgHigh int, err error) {
+func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, err error) {
 	width := g.Width
 	if width == 0 {
 		width = 600
@@ -270,23 +273,18 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, imgHigh int, err e
 		fontOfText = text.SakuraFontFile
 	}
 	// 正文数据的类型
-	ref := reflect.TypeOf(g.Text)
-	typeOfTest := ref.Kind()
-	switch typeOfTest {
-	case reflect.String: // 纯文本
-		textImgInfo, testerr := text.Render(fmt.Sprint(g.Text), fontOfText, width-80, 38)
-		if testerr != nil {
-			err = testerr
-			return
+	switch g.Text.(type) {
+	case string: // 纯文本
+		textImgInfo, err := text.Render(fmt.Sprint(g.Text), fontOfText, width-80, 38)
+		if err != nil {
+			return nil, err
 		}
 		textPic = textImgInfo.Image()
-		textHigh = textPic.Bounds().Dy()
-	case reflect.Array: // 数组
-		value := reflect.ValueOf(g.Text)
-		list, ok := value.Interface().([]string) // 断言字符串数组
+		textHigh = textPic.Bounds().Max.Y
+	case []string: // 字符串数组
+		list, ok := g.Text.([]string) // 断言字符串数组
 		if !ok {
-			err = errors.New("不支持该类型类型")
-			return
+			return nil, errors.New("不支持该类型类型")
 		}
 		textString := ""
 		if g.DisplaySetting {
@@ -301,27 +299,27 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, imgHigh int, err e
 		}
 		textPic = textImgInfo.Image()
 		textHigh = textPic.Bounds().Dy()
-	case reflect.Struct: // 结构体
+	case struct{}: // 结构体
+		ref := reflect.TypeOf(g.Text)
 		value := reflect.ValueOf(g.Text)
 		var textinfo []string
 		for i := 0; i < ref.NumField(); i++ {
-			if g.DisplaySetting {
+			if g.DisplaySetting { // 获取key
 				textinfo = append(textinfo, ref.Field(i).Name)
 			}
 			switch ref.Field(i).Type.Kind() {
-			case reflect.Int:
+			case reflect.Int: // value为int
 				textinfo = append(textinfo, strconv.Itoa(value.Field(i).Interface().(int)))
-			case reflect.Int64:
+			case reflect.Int64: // value为int64
 				textinfo = append(textinfo, strconv.FormatInt(value.Field(i).Interface().(int64), 10))
-			case reflect.Float64:
+			case reflect.Float64: // value为float64
 				textinfo = append(textinfo, strconv.FormatFloat(value.Field(i).Interface().(float64), 'f', 3, 64))
-			case reflect.String:
+			case reflect.String: // value为string
 				textinfo = append(textinfo, value.Field(i).Interface().(string))
-			case reflect.Bool:
+			case reflect.Bool: // value为bool
 				textinfo = append(textinfo, strconv.FormatBool(value.Field(i).Interface().(bool)))
 			default:
-				err = errors.New("不支持该类型类型")
-				return
+				return nil, errors.New("不支持该类型类型")
 			}
 		}
 		textString := strings.Join(textinfo, "\n")
@@ -333,13 +331,16 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, imgHigh int, err e
 		textPic = textImgInfo.Image()
 		textHigh = textPic.Bounds().Dy()
 	default:
-		err = errors.New("不支持该类型类型")
-		return
+		return nil, errors.New("不支持该类型类型")
 	}
 	// 计算图片高度
-	imgHigh = g.High
+	imgHigh := g.High
 	if imgHigh == 0 {
-		imgHigh = 30 + 100 + textHigh + 20
+		if g.DisplayTitle {
+			imgHigh = 30 + 100 + textHigh + 20
+		} else {
+			imgHigh = 20 + textHigh + 20
+		}
 	}
 	// 创建画布
 	canvas := gg.NewContext(width, imgHigh)
@@ -355,39 +356,43 @@ func (g TextCardInfo) DrawTextCard() (imgForCard image.Image, imgHigh int, err e
 		}
 	}
 	// 标题
-	fontOfTitle := g.FontOfTitle
-	if fontOfTitle == "" {
-		fontOfTitle = text.SakuraFontFile
+	if g.DisplayTitle {
+		fontOfTitle := g.FontOfTitle
+		if fontOfTitle == "" {
+			fontOfTitle = text.SakuraFontFile
+		}
+		err = canvas.LoadFontFace(fontOfTitle, 103)
+		if err != nil {
+			return
+		}
+		canvas.SetRGB(0, 0, 0)
+		var titleDx float64 = 10
+		var titleDy float64 = 90
+		switch g.TitleSetting {
+		case "Left":
+			_, titleDy = canvas.MeasureString(g.Title)
+		case "Center":
+			widthOfTilte, hightOfTilte := canvas.MeasureString(g.Title)
+			titleDx = (float64(width) - widthOfTilte) / 2
+			titleDy = hightOfTilte
+		case "Right":
+			widthOfTilte, hightOfTilte := canvas.MeasureString(g.Title)
+			titleDx = float64(width) - widthOfTilte
+			titleDy = hightOfTilte
+		default:
+			return nil, errors.New("TitleSetting 参数错误")
+		}
+		canvas.DrawString(g.Title, titleDx, titleDy+10)
+		// 画横线
+		canvas.DrawRoundedRectangle(10, 115, 580, 10, 2.5)
+		canvas.SetRGB(0, 0, 0)
+		canvas.Fill()
+		// 内容
+		canvas.DrawImage(textPic, 10, 130)
+	} else {
+		// 内容
+		canvas.DrawImage(textPic, 10, 20)
 	}
-	err = canvas.LoadFontFace(fontOfTitle, 103)
-	if err != nil {
-		return
-	}
-	canvas.SetRGB(0, 0, 0)
-	var titleDx float64 = 10
-	var titleDy float64 = 90
-	switch g.TitleSetting {
-	case "Left":
-		_, titleDy = canvas.MeasureString(g.Title)
-	case "Center":
-		widthOfTilte, hightOfTilte := canvas.MeasureString(g.Title)
-		titleDx = (float64(width) - widthOfTilte) / 2
-		titleDy = hightOfTilte
-	case "Right":
-		widthOfTilte, hightOfTilte := canvas.MeasureString(g.Title)
-		titleDx = float64(width) - widthOfTilte
-		titleDy = hightOfTilte
-	default:
-		err = errors.New("TitleSetting 参数错误")
-		return
-	}
-	canvas.DrawString(g.Title, titleDx, titleDy+10)
-	// 画横线
-	canvas.DrawRoundedRectangle(10, 115, 580, 10, 2.5)
-	canvas.SetRGB(0, 0, 0)
-	canvas.Fill()
-	// 内容
-	canvas.DrawImage(textPic, 10, 130)
 	// 制图
 	imgForCard = canvas.Image()
 	return
