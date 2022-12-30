@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/Coloured-glaze/gg"
+	jpcolor "github.com/FloatTech/rendercard/color"
 	"github.com/FloatTech/zbputils/img"
 )
 
@@ -65,7 +66,7 @@ type TextCardInfo struct {
 func (t Titleinfo) Drawtitle() (imgs image.Image, err error) {
 	// 创建图像
 	canvas := gg.NewContext(int(Imgwight), 30+30+300+(t.Line*(256+30)))
-	canvas.SetRGBA255(240, 240, 240, 255)
+	canvas.SetRGBA255(245, 245, 245, 255)
 	canvas.Clear()
 
 	// 标题背景1
@@ -85,7 +86,7 @@ func (t Titleinfo) Drawtitle() (imgs image.Image, err error) {
 	}
 
 	// 绘制标题
-	canvas.SetRGBA255(240, 240, 240, 255)
+	canvas.SetRGBA255(250, 250, 250, 255)
 	canvas.DrawString(t.Lefttitle, 25, 30+40+55+canvas.FontHeight()-canvas.FontHeight()/3)
 
 	// 加载size为54的字体
@@ -94,22 +95,27 @@ func (t Titleinfo) Drawtitle() (imgs image.Image, err error) {
 		return
 	}
 
-	// 绘制一系列标题
+	canvas.SetRGBA255(250, 250, 250, 255)
+	// 绘制副标题
 	canvas.DrawString(t.Leftsubtitle, 25+3, 30+40+165+canvas.FontHeight()/3)
-
-	fw, _ := canvas.MeasureString(t.Righttitle)
-	canvas.DrawString(t.Righttitle, Imgwight-25-fw-170-25, 30+40+25+15+canvas.FontHeight()+canvas.FontHeight()/4)
-	fw1, _ := canvas.MeasureString(t.Rightsubtitle)
-	canvas.DrawString(t.Rightsubtitle, Imgwight-25-fw1-170-25, 30+40+25+15+canvas.FontHeight()*2+canvas.FontHeight()/2)
-	canvas.SetRGBA255(240, 240, 240, 255)
 
 	// 加载icon并绘制
 	var icon *img.Factory
-	icon, err = img.LoadFirstFrame(t.Imgpath, 170, 170)
+	icon, err = img.LoadFirstFrame(t.Imgpath, 220, 220)
 	if err != nil {
 		return
 	}
-	canvas.DrawImage(icon.Im, int(Imgwight)-25-170, 30+40+25)
+	canvas.DrawImage(icon.Im, int(Imgwight)-icon.W, 40+30)
+	// 加载size为54的字体
+	err = canvas.LoadFontFace(t.Fontpath, 72)
+	if err != nil {
+		return
+	}
+	fw, _ := canvas.MeasureString(t.Righttitle)
+	canvas.DrawString(t.Righttitle, Imgwight-25-fw-float64(icon.W), 30+40+15+canvas.FontHeight()*1.25)
+	fw1, _ := canvas.MeasureString(t.Rightsubtitle)
+	canvas.DrawString(t.Rightsubtitle, Imgwight-25-fw1-float64(icon.W), 30+40+15+canvas.FontHeight()*2.75)
+
 	imgs = canvas.Image()
 	return
 }
@@ -117,28 +123,28 @@ func (t Titleinfo) Drawtitle() (imgs image.Image, err error) {
 // Drawtitledtext ...
 func (t Titleinfo) Drawtitledtext(info []string) (imgs image.Image, err error) {
 	line := len(info)
-	if line < 6 {
-		line = 6
+	if line < 8 {
+		line = 8
 	}
-	imgh := line*(32+20) + 220 + 10 + 30 + 10 + 50
+	imgh := line*(28+20) + 220 + 50
 
 	// 创建图像
 	canvas := gg.NewContext(int(Imgwight), imgh)
-	canvas.SetRGBA255(15, 15, 15, 204)
+	canvas.SetRGBA255(250, 250, 250, 255)
 	canvas.Clear()
 
 	// 加载icon
 	var icon *img.Factory
-	icon, err = img.LoadFirstFrame(t.Imgpath, 170, 170)
+	icon, err = img.LoadFirstFrame(t.Imgpath, 768, 768)
 	if err != nil {
 		return
 	}
-	canvas.DrawImage(icon.Im, int(Imgwight)-25-170, 25)
+	canvas.DrawImage(icon.Im, Imgwight-icon.W, imgh-icon.H)
 
 	// 绘制标题与内容的分割线
-	canvas.DrawRectangle(0, 220, Imgwight, 10)
+	/*canvas.DrawRectangle(0, 220, Imgwight, 10)
 	canvas.SetRGBA255(240, 240, 240, 255)
-	canvas.Fill()
+	canvas.Fill()*/
 
 	// 加载size为108的字体
 	err = canvas.LoadFontFace(t.Fontpath, 108)
@@ -146,32 +152,35 @@ func (t Titleinfo) Drawtitledtext(info []string) (imgs image.Image, err error) {
 		return
 	}
 
-	// 绘制标题
-	canvas.SetRGBA255(240, 240, 240, 255)
-	canvas.DrawString(t.Lefttitle, 25+40+25, 55+canvas.FontHeight()-canvas.FontHeight()/3)
+	canvas.SetRGBA255(15, 15, 15, 255)
 
+	// 绘制标题
+	titley := 35 + canvas.FontHeight()*0.66
+	canvas.DrawString(t.Lefttitle, 25, titley)
 	// 加载size为54的字体
 	err = canvas.LoadFontFace(t.Fontpath, 54)
 	if err != nil {
 		return
 	}
 
+	// 绘制一系列标题
+	canvas.DrawString(t.Leftsubtitle, 25+3, titley+canvas.FontHeight()*1.6)
+
+	lefttitlewight, _ := canvas.MeasureString(t.Leftsubtitle)
+	canvas.DrawRectangle(25, titley+canvas.FontHeight()*1.85, lefttitlewight, 6)
 	// 绘制插件开启状态
-	canvas.DrawRectangle(25, 25, 40, 170)
 	if t.Status {
-		canvas.SetRGBA255(15, 175, 15, 255)
+		canvas.SetRGBA255(35, 235, 35, 255)
 	} else {
-		canvas.SetRGBA255(200, 15, 15, 255)
+		canvas.SetRGBA255(235, 35, 35, 255)
 	}
 	canvas.Fill()
-	canvas.SetRGBA255(240, 240, 240, 255)
+	canvas.SetRGBA255(15, 15, 15, 255)
 
-	// 绘制一系列标题
-	canvas.DrawString(t.Leftsubtitle, 25+3+40+25, 165+canvas.FontHeight()/3)
 	fw, _ := canvas.MeasureString(t.Righttitle)
-	canvas.DrawString(t.Righttitle, Imgwight-25-fw-170-25, 25+15+canvas.FontHeight()+canvas.FontHeight()/4)
+	canvas.DrawString(t.Righttitle, Imgwight-40-fw, 30+canvas.FontHeight()*1.25)
 	fw1, _ := canvas.MeasureString(t.Rightsubtitle)
-	canvas.DrawString(t.Rightsubtitle, Imgwight-25-fw1-170-25, 25+15+canvas.FontHeight()*2+canvas.FontHeight()/2)
+	canvas.DrawString(t.Rightsubtitle, Imgwight-40-fw1, 30+canvas.FontHeight()*2.5)
 
 	// 加载size为38的字体
 	err = canvas.LoadFontFace(t.Fontpath2, 38)
@@ -179,9 +188,9 @@ func (t Titleinfo) Drawtitledtext(info []string) (imgs image.Image, err error) {
 		return
 	}
 
-	x, y := 25.0, 25.0
-	for i := 0; i < len(info); i++ {
-		canvas.DrawString(info[i], x, y+220+10+canvas.FontHeight())
+	x, y := 25.0, titley
+	for _, text := range info {
+		canvas.DrawString(text, x, 1.5*titley+y+canvas.FontHeight())
 		y += 20 + canvas.FontHeight()
 	}
 	imgs = canvas.Image()
@@ -195,21 +204,8 @@ func (t Titleinfo) Drawcard() (imgs image.Image, err error) {
 	// 绘制图片
 	var banner *img.Factory
 	banner, err = img.LoadFirstFrame(t.Imgpath, int(recw)*2, int(rech)*2)
-	var r, g, b int
-	switch rand.Intn(6) {
-	case 0: // 红
-		r, g, b = rand.Intn(50)+180, rand.Intn(30), rand.Intn(80)+40
-	case 1: // 橙
-		r, g, b = rand.Intn(40)+210, rand.Intn(50)+70, rand.Intn(50)+20
-	case 2: // 黄
-		r, g, b = rand.Intn(40)+210, rand.Intn(50)+170, rand.Intn(110)+40
-	case 3: // 绿
-		r, g, b = rand.Intn(60)+80, rand.Intn(80)+140, rand.Intn(60)+80
-	case 4: // 蓝
-		r, g, b = rand.Intn(60)+80, rand.Intn(50)+170, rand.Intn(50)+170
-	case 5: // 紫
-		r, g, b = rand.Intn(60)+80, rand.Intn(60)+60, rand.Intn(50)+170
-	}
+	r, g, b := jpcolor.Randcolor()
+
 	if err == nil {
 		canvas.DrawImage(img.Size(banner.Im, int(recw), int(rech)).Im, 0, 0)
 	} else {
@@ -227,7 +223,7 @@ func (t Titleinfo) Drawcard() (imgs image.Image, err error) {
 	/*canvas.DrawRectangle(recw/10, 0, recw/10, (rech/4)-10)
 	canvas.DrawRoundedRectangle(recw/10, 0, recw/10, (rech / 4), 8)*/
 	if t.Status {
-		canvas.DrawRectangle(0, rech/5*3, recw, rech/5*3)
+		canvas.DrawRectangle(0, rech*0.54, recw, rech-rech*0.54)
 		// canvas.SetRGBA255(15, 175, 15, 255)
 	} else {
 		canvas.DrawRectangle(0, 0, recw, rech)
@@ -257,15 +253,16 @@ func (t Titleinfo) Drawcard() (imgs image.Image, err error) {
 	if err != nil {
 		return
 	}
-	canvas.DrawString(t.Lefttitle, recw/32, (recw*0.415)+canvas.FontHeight()-canvas.FontHeight()/4)
+	y := (rech * 0.56) + canvas.FontHeight()*0.9
+	canvas.DrawString(t.Lefttitle, recw*0.04, y)
 
 	err = canvas.LoadFontFace(t.Fontpath, 32)
 	if err != nil {
 		return
 	}
-	canvas.DrawString(t.Leftsubtitle, recw/32, (recw*0.460)+recw/6-canvas.FontHeight()/4)
+	canvas.DrawString(t.Leftsubtitle, recw*0.04, y+canvas.FontHeight()*1.75)
 
-	imgs = canvas.Image()
+	imgs = Fillet(canvas.Image(), 14)
 	return
 }
 
