@@ -253,16 +253,16 @@ func (t Titleinfo) Drawcard() (imgs image.Image, err error) {
 	if err != nil {
 		return
 	}
-	y := (rech * 0.56) + canvas.FontHeight()*0.9
+	y := (rech * 0.56) + canvas.FontHeight()*0.95
 	canvas.DrawString(t.Lefttitle, recw*0.04, y)
 
 	err = canvas.LoadFontFace(t.Fontpath, 32)
 	if err != nil {
 		return
 	}
-	canvas.DrawString(t.Leftsubtitle, recw*0.04, y+canvas.FontHeight()*1.75)
+	canvas.DrawString(t.Leftsubtitle, recw*0.04, y+canvas.FontHeight()*1.85)
 
-	imgs = Fillet(canvas.Image(), 14)
+	imgs = Fillet(canvas.Image(), 16)
 	return
 }
 
