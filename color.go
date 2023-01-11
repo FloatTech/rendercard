@@ -1,10 +1,9 @@
-// Package color ...
-package color
+package rendercard
 
 import "math/rand"
 
-// Randcolor 随机和风颜色
-func Randcolor() (r, g, b int) {
+// RandJPColor 随机和风颜色
+func RandJPColor() (r, g, b int) {
 	switch rand.Intn(6) {
 	case 0: // 红
 		r, g, b = rand.Intn(50)+180, rand.Intn(30), rand.Intn(80)+40
