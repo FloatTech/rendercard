@@ -13,7 +13,9 @@ import (
 )
 
 var (
-	ErrNilTextFont  = errors.New("nil TextFont")
+	// ErrNilTextFont ...
+	ErrNilTextFont = errors.New("nil TextFont")
+	// ErrNilTitleFont ...
 	ErrNilTitleFont = errors.New("nil TitleFont")
 )
 

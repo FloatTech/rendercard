@@ -27,13 +27,14 @@ type Title struct {
 	TextFont string
 }
 
+// Alignment 对齐规则
 type Alignment uint8
 
 const (
-	NilAlign Alignment = iota
-	AlignLeft
-	AlignCenter
-	AlignRight
+	NilAlign    Alignment = iota // NilAlign ..
+	AlignLeft                    // AlignLeft 左对齐
+	AlignCenter                  // AlignCenter 居中对齐
+	AlignRight                   // AlignRight 右对齐
 )
 
 // Card 卡片配置
