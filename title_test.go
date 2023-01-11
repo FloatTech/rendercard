@@ -44,8 +44,8 @@ func TestDrawTitleWithText(t *testing.T) {
 		LeftSubtitle:  "简介",
 		RightTitle:    "FloatTech",
 		RightSubtitle: "ZeroBot-Plugin",
-		TitleFont:     "GlowSansSC-Normal-ExtraBold.ttf",
-		TextFont:      "Impact.ttf",
+		TitleFont:     "Impact.ttf",
+		TextFont:      "GlowSansSC-Normal-ExtraBold.ttf",
 		ImagePath:     ".github/warma.png",
 	}).DrawTitleWithText([]string{"one", "two", "san", "si"})
 	if err != nil {
@@ -69,8 +69,8 @@ func TestDrawCard(t *testing.T) {
 		IsEnabled:    true,
 		LeftTitle:    "ServiceName",
 		LeftSubtitle: "简介",
-		TitleFont:    "GlowSansSC-Normal-ExtraBold.ttf",
-		TextFont:     "Impact.ttf",
+		TitleFont:    "Impact.ttf",
+		TextFont:     "GlowSansSC-Normal-ExtraBold.ttf",
 		ImagePath:    ".github/warma.png",
 	}).DrawCard()
 	if err != nil {

@@ -123,11 +123,6 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	canvas.Fill()
 	canvas.SetRGBA255(15, 15, 15, 255)
 
-	err = canvas.LoadFontFace(t.TextFont, fontsize2)
-	if err != nil {
-		return
-	}
-
 	stringwight, _ = canvas.MeasureString(t.RightTitle)
 	canvas.DrawStringAnchored(t.RightTitle, DefaultWidth-40-stringwight/2+t.OffsetX, 40+fontsize2*72/96*0.5+t.OffsetY, 0.5, 0.5)
 	stringwight, _ = canvas.MeasureString(t.RightSubtitle)
@@ -173,14 +168,14 @@ func (t *Title) DrawCard() (imgs image.Image, err error) {
 	// 绘制插件信息
 	canvas.SetRGBA255(240, 240, 240, 255)
 	fontsize1, fontsize2 := 64.0, 32.0
-	err = canvas.LoadFontFace(t.TextFont, fontsize1)
+	err = canvas.LoadFontFace(t.TitleFont, fontsize1)
 	if err != nil {
 		return
 	}
 	stringwight, _ := canvas.MeasureString(t.LeftTitle)
 	canvas.DrawStringAnchored(t.LeftTitle, stringwight/2+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.33+t.OffsetX, rech*0.54+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
-	err = canvas.LoadFontFace(t.TitleFont, fontsize2)
+	err = canvas.LoadFontFace(t.TextFont, fontsize2)
 	if err != nil {
 		return
 	}
