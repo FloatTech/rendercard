@@ -24,25 +24,28 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 	canvas.SetRGBA255(0, 0, 0, 153)
 	canvas.Fill()
 
+	fontsize1, fontsize2 := 108.0, 54.0
 	// 加载size为108的字体
-	err = canvas.LoadFontFace(t.TitleFont, 108)
+	err = canvas.LoadFontFace(t.TitleFont, fontsize1)
 	if err != nil {
 		return
 	}
 
 	// 绘制标题
 	canvas.SetRGBA255(250, 250, 250, 255)
-	canvas.DrawString(t.LeftTitle, 25, 30+40+55+canvas.FontHeight()-canvas.FontHeight()/3)
+	stringwight, _ := canvas.MeasureString(t.LeftTitle)
+	canvas.DrawStringAnchored(t.LeftTitle, (220-(fontsize1+fontsize2)*72/96)*0.33+stringwight/2+t.OffsetX, 30+40+(220-(fontsize1+fontsize2)*72/96)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
 	// 加载size为54的字体
-	err = canvas.LoadFontFace(t.TitleFont, 54)
+	err = canvas.LoadFontFace(t.TextFont, fontsize2)
 	if err != nil {
 		return
 	}
 
 	canvas.SetRGBA255(250, 250, 250, 255)
 	// 绘制副标题
-	canvas.DrawString(t.LeftSubtitle, 25+3, 30+40+165+canvas.FontHeight()/3)
+	stringwight, _ = canvas.MeasureString(t.LeftSubtitle)
+	canvas.DrawStringAnchored(t.LeftSubtitle, 3+(220-(fontsize1+fontsize2)*72/96)*0.33+stringwight/2+t.OffsetX, 30+40+(220-(fontsize1+fontsize2)*72/96)*0.66+fontsize1*72/96+fontsize2*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
 	// 加载icon并绘制
 	var icon *img.Factory
@@ -51,15 +54,16 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 		return
 	}
 	canvas.DrawImage(icon.Im, int(DefaultWidth)-icon.W, 40+30)
-	// 加载size为54的字体
-	err = canvas.LoadFontFace(t.TitleFont, 72)
+	// 加载size为72的字体
+	fontsize1 = 72
+	err = canvas.LoadFontFace(t.TextFont, fontsize1)
 	if err != nil {
 		return
 	}
-	fw, _ := canvas.MeasureString(t.RightTitle)
-	canvas.DrawString(t.RightTitle, DefaultWidth-25-fw-float64(icon.W), 30+40+15+canvas.FontHeight()*1.25)
-	fw1, _ := canvas.MeasureString(t.RightSubtitle)
-	canvas.DrawString(t.RightSubtitle, DefaultWidth-25-fw1-float64(icon.W), 30+40+15+canvas.FontHeight()*2.75)
+	stringwight, _ = canvas.MeasureString(t.RightTitle)
+	canvas.DrawStringAnchored(t.RightTitle, DefaultWidth-25-float64(icon.W)-stringwight/2+t.OffsetX, 30+40+(220-fontsize1*72/96*2)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
+	stringwight, _ = canvas.MeasureString(t.RightSubtitle)
+	canvas.DrawStringAnchored(t.RightSubtitle, DefaultWidth-25-float64(icon.W)-stringwight/2+t.OffsetX, 30+40+(220-fontsize1*72/96*2)*0.66+fontsize1*72/96*1.5+t.OffsetY, 0.5, 0.5)
 
 	imgs = canvas.Image()
 	return
@@ -80,19 +84,15 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 
 	// 加载icon
 	var icon *img.Factory
-	icon, err = img.LoadFirstFrame(t.ImagePath, 768, 768)
+	icon, err = img.LoadFirstFrame(t.ImagePath, 512, 512)
 	if err != nil {
 		return
 	}
 	canvas.DrawImage(icon.Im, DefaultWidth-icon.W, imgh-icon.H)
 
-	// 绘制标题与内容的分割线
-	/*canvas.DrawRectangle(0, 220, Imgwight, 10)
-	canvas.SetRGBA255(240, 240, 240, 255)
-	canvas.Fill()*/
-
 	// 加载size为108的字体
-	err = canvas.LoadFontFace(t.TitleFont, 108)
+	fontsize1, fontsize2 := 108.0, 54.0
+	err = canvas.LoadFontFace(t.TitleFont, fontsize1)
 	if err != nil {
 		return
 	}
@@ -100,19 +100,19 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	canvas.SetRGBA255(15, 15, 15, 255)
 
 	// 绘制标题
-	titley := 35 + canvas.FontHeight()*0.66
-	canvas.DrawString(t.LeftTitle, 25, titley)
+	stringwight, _ := canvas.MeasureString(t.LeftTitle)
+	canvas.DrawStringAnchored(t.LeftTitle, 25+stringwight/2+t.OffsetX, 25+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 	// 加载size为54的字体
-	err = canvas.LoadFontFace(t.TitleFont, 54)
+	err = canvas.LoadFontFace(t.TextFont, fontsize2)
 	if err != nil {
 		return
 	}
 
 	// 绘制一系列标题
-	canvas.DrawString(t.LeftSubtitle, 25+3, titley+canvas.FontHeight()*1.6)
+	stringwight, _ = canvas.MeasureString(t.LeftSubtitle)
+	canvas.DrawStringAnchored(t.LeftSubtitle, 25+3+stringwight/2+t.OffsetX, 25+fontsize1*72/96+25+fontsize2*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
-	lefttitlewight, _ := canvas.MeasureString(t.LeftSubtitle)
-	canvas.DrawRectangle(25, titley+canvas.FontHeight()*1.85, lefttitlewight, 6)
+	canvas.DrawRectangle(25+3+t.OffsetX, 25+fontsize1*72/96+25+fontsize2*72/96+5+t.OffsetY, stringwight, 6)
 	// 绘制插件开启状态
 	if t.IsEnabled {
 		canvas.SetRGBA255(35, 235, 35, 255)
@@ -122,20 +122,20 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	canvas.Fill()
 	canvas.SetRGBA255(15, 15, 15, 255)
 
-	fw, _ := canvas.MeasureString(t.RightTitle)
-	canvas.DrawString(t.RightTitle, DefaultWidth-40-fw, 30+canvas.FontHeight()*1.25)
-	fw1, _ := canvas.MeasureString(t.RightSubtitle)
-	canvas.DrawString(t.RightSubtitle, DefaultWidth-40-fw1, 30+canvas.FontHeight()*2.5)
+	stringwight, _ = canvas.MeasureString(t.RightTitle)
+	canvas.DrawStringAnchored(t.RightTitle, DefaultWidth-40-stringwight/2+t.OffsetX, 40+fontsize2*72/96*0.5+t.OffsetY, 0.5, 0.5)
+	stringwight, _ = canvas.MeasureString(t.RightSubtitle)
+	canvas.DrawStringAnchored(t.RightSubtitle, DefaultWidth-40-stringwight/2+t.OffsetX, 40+25+fontsize2*72/96*1.5+t.OffsetY, 0.5, 0.5)
 
 	// 加载size为38的字体
-	err = canvas.LoadFontFace(t.TextFont, 38)
+	err = canvas.LoadFontFace(t.TitleFont, 38)
 	if err != nil {
 		return
 	}
 
-	y := titley
+	y := 25 + fontsize1*72/96 + 25 + fontsize2*72/96
 	for _, text := range info {
-		canvas.DrawString(text, 25.0, 1.5*titley+y+canvas.FontHeight())
+		canvas.DrawString(text, 25.0, y+canvas.FontHeight()*2)
 		y += 20 + canvas.FontHeight()
 	}
 	imgs = canvas.Image()
@@ -156,54 +156,30 @@ func (t *Title) DrawCard() (imgs image.Image, err error) {
 		canvas.SetRGB255(RandJPColor())
 		canvas.Fill()
 	}
-
-	// 绘制遮罩
-	/*canvas.DrawRectangle(0, rech/3*2, recw, rech/3)
-	canvas.SetRGBA255(0, 0, 0, 153)
-	canvas.Fill()*/
-
-	// 绘制排名
-	/*canvas.DrawRectangle(recw/10, 0, recw/10, (rech/4)-10)
-	canvas.DrawRoundedRectangle(recw/10, 0, recw/10, (rech / 4), 8)*/
 	if t.IsEnabled {
 		canvas.DrawRectangle(0, rech*0.54, recw, rech-rech*0.54)
-		// canvas.SetRGBA255(15, 175, 15, 255)
 	} else {
 		canvas.DrawRectangle(0, 0, recw, rech)
-		// canvas.SetRGBA255(200, 15, 15, 255)
 	}
 	canvas.SetRGBA255(0, 0, 0, 183)
 	canvas.Fill()
 
-	// 绘制插件排名
-	/*canvas.SetRGBA255(240, 240, 240, 255)
-	var fw2 float64
-	i, _ := strconv.Atoi(t.Rightsubtitle)
-	if i > 99 {
-		err = canvas.LoadFontFace(t.Fontpath, 24)
-	} else {
-		err = canvas.LoadFontFace(t.Fontpath, 28)
-	}
-	if err != nil {
-		return
-	}
-	fw2, _ = canvas.MeasureString(t.Rightsubtitle)
-	canvas.DrawString(t.Rightsubtitle, recw/10+((recw/10-fw2)/2), canvas.FontHeight()*3/8+(rech/8))*/
-
 	// 绘制插件信息
 	canvas.SetRGBA255(240, 240, 240, 255)
-	err = canvas.LoadFontFace(t.TitleFont, 64)
+	fontsize1, fontsize2 := 64.0, 32.0
+	err = canvas.LoadFontFace(t.TitleFont, fontsize1)
 	if err != nil {
 		return
 	}
-	y := (rech * 0.56) + canvas.FontHeight()*0.95
-	canvas.DrawString(t.LeftTitle, recw*0.04, y)
+	stringwight, _ := canvas.MeasureString(t.LeftTitle)
+	canvas.DrawStringAnchored(t.LeftTitle, stringwight/2+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.33+t.OffsetX, rech*0.54+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
-	err = canvas.LoadFontFace(t.TitleFont, 32)
+	err = canvas.LoadFontFace(t.TextFont, fontsize2)
 	if err != nil {
 		return
 	}
-	canvas.DrawString(t.LeftSubtitle, recw*0.04, y+canvas.FontHeight()*1.85)
+	stringwight, _ = canvas.MeasureString(t.LeftSubtitle)
+	canvas.DrawStringAnchored(t.LeftSubtitle, 3+stringwight/2+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.33+t.OffsetX, rech*0.54+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.66+fontsize1*72/96+fontsize2*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
 	imgs = Fillet(canvas.Image(), 16)
 	return

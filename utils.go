@@ -23,7 +23,6 @@ func Fillet(dst image.Image, r int) image.Image {
 					dstr.Set(mx-1-x, my-1-y, color.NRGBA{})
 				}
 			}
-
 		}
 	}
 	return dstr

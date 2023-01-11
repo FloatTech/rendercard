@@ -25,6 +25,10 @@ type Title struct {
 	TitleFont string
 	// TextFont 正文字体路径
 	TextFont string
+	// OffsetX 文字X坐标偏移 向右为正方向
+	OffsetX float64
+	// OffsetX 文字Y坐标偏移 向下为正方向
+	OffsetY float64
 }
 
 // Alignment 对齐规则

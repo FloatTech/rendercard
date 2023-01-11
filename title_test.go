@@ -13,11 +13,12 @@ import (
 func TestDrawTitle(t *testing.T) {
 	img, err := (&Title{
 		Line:          0,
-		LeftTitle:     "FUWULIEBIAO",
+		LeftTitle:     "服务列表",
 		LeftSubtitle:  "service_list",
 		RightTitle:    "FloatTech",
 		RightSubtitle: "ZeroBot-Plugin",
-		TitleFont:     "Impact.ttf",
+		TitleFont:     "GlowSansSC-Normal-ExtraBold.ttf",
+		TextFont:      "Impact.ttf",
 		ImagePath:     ".github/warma.png",
 	}).DrawTitle()
 	if err != nil {
@@ -32,18 +33,18 @@ func TestDrawTitle(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "7a7ccec658b1acaf1a018d47357b1f62", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "28f9f68f3ef7987a9d189b52b9a8b399", hex.EncodeToString(h.Sum(nil)))
 }
 
 func TestDrawTitleWithText(t *testing.T) {
 	img, err := (&Title{
 		Line:          0,
 		IsEnabled:     true,
-		LeftTitle:     "NAME",
+		LeftTitle:     "服务名",
 		LeftSubtitle:  "instruction",
 		RightTitle:    "FloatTech",
 		RightSubtitle: "ZeroBot-Plugin",
-		TitleFont:     "Impact.ttf",
+		TitleFont:     "GlowSansSC-Normal-ExtraBold.ttf",
 		TextFont:      "Impact.ttf",
 		ImagePath:     ".github/warma.png",
 	}).DrawTitleWithText([]string{"one", "two", "san", "si"})
@@ -59,16 +60,16 @@ func TestDrawTitleWithText(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "fdff61acd070ab6806cb587f5fad527c", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "3f18e919e69e38b2302d8b2fc31c4cb2", hex.EncodeToString(h.Sum(nil)))
 }
 
 func TestDrawCard(t *testing.T) {
 	img, err := (&Title{
 		Line:         0,
 		IsEnabled:    true,
-		LeftTitle:    "NAME",
+		LeftTitle:    "服务名",
 		LeftSubtitle: "instruction",
-		TitleFont:    "Impact.ttf",
+		TitleFont:    "GlowSansSC-Normal-ExtraBold.ttf",
 		TextFont:     "Impact.ttf",
 		ImagePath:    ".github/warma.png",
 	}).DrawCard()
@@ -84,5 +85,5 @@ func TestDrawCard(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "84d9e5f39b921c3866785c9ae39f74d7", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "596186f97c3a4126a9d3a7b30b959810", hex.EncodeToString(h.Sum(nil)))
 }
