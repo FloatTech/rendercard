@@ -40,8 +40,8 @@ func TestDrawTitleWithText(t *testing.T) {
 	img, err := (&Title{
 		Line:          0,
 		IsEnabled:     true,
-		LeftTitle:     "服务名",
-		LeftSubtitle:  "instruction",
+		LeftTitle:     "ServiceName",
+		LeftSubtitle:  "简介",
 		RightTitle:    "FloatTech",
 		RightSubtitle: "ZeroBot-Plugin",
 		TitleFont:     "GlowSansSC-Normal-ExtraBold.ttf",
@@ -60,15 +60,15 @@ func TestDrawTitleWithText(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "3f18e919e69e38b2302d8b2fc31c4cb2", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "bf5ce310c0a565477fa83904a506c08d", hex.EncodeToString(h.Sum(nil)))
 }
 
 func TestDrawCard(t *testing.T) {
 	img, err := (&Title{
 		Line:         0,
 		IsEnabled:    true,
-		LeftTitle:    "服务名",
-		LeftSubtitle: "instruction",
+		LeftTitle:    "ServiceName",
+		LeftSubtitle: "简介",
 		TitleFont:    "GlowSansSC-Normal-ExtraBold.ttf",
 		TextFont:     "Impact.ttf",
 		ImagePath:    ".github/warma.png",
@@ -85,5 +85,5 @@ func TestDrawCard(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "596186f97c3a4126a9d3a7b30b959810", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "c7669d5cc76599abbd8d22b507d2102a", hex.EncodeToString(h.Sum(nil)))
 }

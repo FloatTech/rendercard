@@ -5,13 +5,13 @@ go 1.19
 require (
 	github.com/Coloured-glaze/gg v1.3.4
 	github.com/FloatTech/zbputils v1.6.2-0.20230111073858-4d59c5450bfb
+	github.com/disintegration/imaging v1.6.2
 	github.com/stretchr/testify v1.8.1
 )
 
 require (
 	github.com/FloatTech/floatbox v0.0.0-20230111053652-a03d6334fadf // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/ericpauley/go-quantize v0.0.0-20200331213906-ae555eb2afa4 // indirect
 	github.com/fumiama/cron v1.3.0 // indirect
 	github.com/fumiama/go-base16384 v1.6.4 // indirect
