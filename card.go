@@ -20,7 +20,7 @@ var (
 )
 
 // DrawTextCard 绘制文字卡片
-func (g Card) DrawTextCard() (imgForCard image.Image, err error) {
+func (g *Card) DrawTextCard() (imgForCard image.Image, err error) {
 	width := g.Width
 	if width == 0 {
 		width = 600
