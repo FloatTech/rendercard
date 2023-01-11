@@ -78,6 +78,7 @@ func (g Card) DrawTextCard() (imgForCard image.Image, err error) {
 		titleDx := 10.0
 		widthOfTilte, titleDy := canvas.MeasureString(g.Title)
 		switch g.TitleAlign {
+		case NilAlign:
 		case AlignLeft:
 		case AlignCenter:
 			titleDx = (float64(width) - widthOfTilte) / 2
