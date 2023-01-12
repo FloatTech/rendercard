@@ -17,11 +17,11 @@ func DrawRoundShadowedRectangle(canvas *gg.Context, x, y, w, h, r, sr, sigma flo
 
 // DrawShadowedRectangle 绘制阴影
 func DrawShadowedRectangle(canvas *gg.Context, x, y, w, h, r, sigma float64, ox, oy int, shadowcolor color.Color) {
-	one := gg.NewContext(canvas.W(), canvas.H())
+	one := gg.NewContextForImage(Transparency(canvas.Image(), 0))
 	one.DrawRoundedRectangle(x, y, w, h, r)
 	one.SetColor(shadowcolor)
 	one.Fill()
-	canvas.DrawImage(imaging.Blur(one.Image(), sigma), int(x)+ox, int(y)+oy)
+	canvas.DrawImage(imaging.Blur(one.Image(), sigma), ox, oy)
 }
 
 // DrawShadowedString 绘制带阴影的文字
@@ -33,7 +33,7 @@ func DrawShadowedString(canvas *gg.Context, s, fontfile string, x, y, point, sig
 	}
 	one.SetColor(shadowcolor)
 	one.DrawString(s, x, y)
-	canvas.DrawImage(imaging.Blur(one.Image(), sigma), int(x)+ox, int(y)+oy)
+	canvas.DrawImage(imaging.Blur(one.Image(), sigma), ox, oy)
 	err = canvas.LoadFontFace(fontfile, point)
 	if err != nil {
 		return
@@ -52,7 +52,7 @@ func DrawShadowedStringAnchored(canvas *gg.Context, s, fontfile string, x, y, po
 	}
 	one.SetColor(shadowcolor)
 	one.DrawStringAnchored(s, x, y, ax, ay)
-	canvas.DrawImage(imaging.Blur(one.Image(), sigma), int(x)+ox, int(y)+oy)
+	canvas.DrawImage(imaging.Blur(one.Image(), sigma), ox, oy)
 	err = canvas.LoadFontFace(fontfile, point)
 	if err != nil {
 		return
