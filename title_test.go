@@ -65,13 +65,15 @@ func TestDrawTitleWithText(t *testing.T) {
 
 func TestDrawCard(t *testing.T) {
 	img, err := (&Title{
-		Line:         0,
-		IsEnabled:    true,
-		LeftTitle:    "ServiceName",
-		LeftSubtitle: "简介",
-		TitleFont:    "Impact.ttf",
-		TextFont:     "GlowSansSC-Normal-ExtraBold.ttf",
-		ImagePath:    ".github/warma.png",
+		Line:                 0,
+		IsEnabled:            true,
+		LeftTitle:            "ServiceName",
+		LeftSubtitle:         "简介",
+		TitleFont:            "Impact.ttf",
+		TextFont:             "GlowSansSC-Normal-ExtraBold.ttf",
+		ImagePath:            ".github/warma.png",
+		TitleFontOffsetPoint: -6,
+		TextFontOffsetPoint:  -6,
 	}).DrawCard()
 	if err != nil {
 		t.Fatal(err)
@@ -85,5 +87,5 @@ func TestDrawCard(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "c7669d5cc76599abbd8d22b507d2102a", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "4e1b4c439a78d833b0931655d736b02f", hex.EncodeToString(h.Sum(nil)))
 }

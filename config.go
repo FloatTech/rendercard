@@ -29,6 +29,10 @@ type Title struct {
 	OffsetX float64
 	// OffsetX 文字Y坐标偏移 向下为正方向
 	OffsetY float64
+	// TitleFontOffsetPoint 标题字体大小偏移
+	TitleFontOffsetPoint float64
+	// TextFontOffsetPoint 正文字体大小偏移
+	TextFontOffsetPoint float64
 }
 
 // Alignment 对齐规则
