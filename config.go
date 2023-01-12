@@ -1,5 +1,10 @@
 package rendercard
 
+import (
+	"hash/crc64"
+	"unsafe"
+)
+
 const (
 	// DefaultWidth 默认宽度
 	DefaultWidth = 1272.0
@@ -35,6 +40,21 @@ type Title struct {
 	TextFontOffsetPoint float64
 }
 
+func (t *Title) Sum64() uint64 {
+	h := crc64.New(crc64.MakeTable(crc64.ECMA))
+	sz := unsafe.Sizeof(Title{})
+	var raw []byte
+	s := (*slice)(unsafe.Pointer(&raw))
+	s.data = unsafe.Pointer(t)
+	s.len = int(sz)
+	s.cap = int(sz)
+	_, err := h.Write(raw)
+	if err != nil {
+		return 0
+	}
+	return h.Sum64()
+}
+
 // Alignment 对齐规则
 type Alignment uint8
 
@@ -67,4 +87,19 @@ type Card struct {
 	TitleAlign Alignment
 	// Text 正文内容
 	Text []string
+}
+
+func (c *Card) Sum64() uint64 {
+	h := crc64.New(crc64.MakeTable(crc64.ECMA))
+	sz := unsafe.Sizeof(Card{})
+	var raw []byte
+	s := (*slice)(unsafe.Pointer(&raw))
+	s.data = unsafe.Pointer(c)
+	s.len = int(sz)
+	s.cap = int(sz)
+	_, err := h.Write(raw)
+	if err != nil {
+		return 0
+	}
+	return h.Sum64()
 }
