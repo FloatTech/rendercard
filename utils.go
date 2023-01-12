@@ -43,40 +43,34 @@ func Transparency(dst image.Image, magnification float64) image.Image {
 }
 
 // Truncate 截断文字
-func Truncate(fontfile string, texts []string, maxW, fontsize float64) ([]string, error) {
+func Truncate(fontfile string, texts []string, maxW, fontsize float64) (newtexts []string, err error) {
 	one := gg.NewContext(1, 1)
-	err := one.LoadFontFace(fontfile, fontsize)
+	err = one.LoadFontFace(fontfile, fontsize)
 	if err != nil {
-		return nil, err
+		return
 	}
-	newtexts := make([]string, 0, len(texts)*2)
+	newtexts = make([]string, 0, len(texts)*2)
 	for i := 0; i < len(texts); i++ {
-		newlinetext, textw, tmpw := "", 0.0, 0.0
-		text := texts[i]
 		for len(texts[i]) > 0 {
 			var tmp strings.Builder
-			tmp.Grow(len(text))
-			res := make([]rune, 0, len(text))
-			for _, r := range text {
-				tmp.WriteRune(r)
-				width, _ := one.MeasureString(tmp.String()) // 获取文字宽度
-				if width > maxW {                           // 如果宽度大于文字边距
-					break // 跳出
+			tmp.Grow(len(texts[i]))
+			res := make([]rune, 0, len(texts[i]))
+			for _, t := range texts[i] {
+				tmp.WriteRune(t)
+				width, _ := one.MeasureString(tmp.String())
+				if width > maxW {
+					break
 				} else {
-					tmpw = width
-					res = append(res, r) // 写入
+					res = append(res, t)
 				}
 			}
-			newlinetext = string(res)
+			newlinetext := string(res)
 			newtexts = append(newtexts, newlinetext)
-			if tmpw > textw {
-				textw = tmpw
-			}
 			if len(newlinetext) >= len(texts[i]) {
 				break
 			}
 			texts[i] = texts[i][len(newlinetext):]
 		}
 	}
-	return newtexts, nil
+	return
 }
