@@ -186,6 +186,6 @@ func (t *Title) DrawCard() (imgs image.Image, err error) {
 	}
 	canvas.DrawStringAnchored(t.LeftSubtitle, recw/2+t.OffsetX, rech*0.54+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.66+fontsize1*72/96+fontsize2*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
-	imgs = Fillet(canvas.Image(), 16)
+	imgs = canvas.Image()
 	return
 }
