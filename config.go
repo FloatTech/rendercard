@@ -40,6 +40,7 @@ type Title struct {
 	TextFontOffsetPoint float64
 }
 
+// Sum64 struct 的摘要
 func (t *Title) Sum64() uint64 {
 	h := crc64.New(crc64.MakeTable(crc64.ECMA))
 	sz := unsafe.Sizeof(Title{})
@@ -89,6 +90,7 @@ type Card struct {
 	Text []string
 }
 
+// Sum64 struct 的摘要
 func (c *Card) Sum64() uint64 {
 	h := crc64.New(crc64.MakeTable(crc64.ECMA))
 	sz := unsafe.Sizeof(Card{})
