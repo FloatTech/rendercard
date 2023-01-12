@@ -66,15 +66,15 @@ func Truncate(fontfile string, texts []string, maxW, fontsize float64) ([]string
 					res = append(res, r) // 写入
 				}
 				newlinetext = string(res)
+				newtexts = append(newtexts, newlinetext)
+				if tmpw > textw {
+					textw = tmpw
+				}
+				if len(newlinetext) >= len(texts[i]) {
+					break
+				}
+				texts[i] = texts[i][len(newlinetext):]
 			}
-			newtexts = append(newtexts, newlinetext)
-			if tmpw > textw {
-				textw = tmpw
-			}
-			if len(newlinetext) >= len(texts[i]) {
-				break
-			}
-			texts[i] = texts[i][len(newlinetext):]
 		}
 	}
 	return newtexts, nil
