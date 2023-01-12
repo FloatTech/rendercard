@@ -20,22 +20,22 @@ var (
 )
 
 // DrawTextCard 绘制文字卡片
-func (g *Card) DrawTextCard() (imgForCard image.Image, err error) {
-	width := g.Width
+func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
+	width := c.Width
 	if width == 0 {
 		width = 600
 	}
 	// 根据宽度获取高度
-	fontOfText := g.TextFont
+	fontOfText := c.TextFont
 	if fontOfText == "" {
 		return nil, ErrNilTextFont
 	}
 	// 正文数据
 	textString := ""
-	if g.IsTextSplitPerElement {
-		textString = strings.Join(g.Text, "\n")
+	if c.IsTextSplitPerElement {
+		textString = strings.Join(c.Text, "\n")
 	} else {
-		textString = strings.Join(g.Text, " ")
+		textString = strings.Join(c.Text, " ")
 	}
 	textImg, err := text.Render(textString, fontOfText, width-80, 38)
 	if err != nil {
@@ -43,9 +43,9 @@ func (g *Card) DrawTextCard() (imgForCard image.Image, err error) {
 	}
 	textHigh := textImg.Bounds().Dy()
 	// 计算图片高度
-	imgHigh := g.Height
+	imgHigh := c.Height
 	if imgHigh == 0 {
-		if g.CanTitleShown {
+		if c.CanTitleShown {
 			imgHigh = 30 + 100 + textHigh + 20
 		} else {
 			imgHigh = 20 + textHigh + 20
@@ -54,19 +54,19 @@ func (g *Card) DrawTextCard() (imgForCard image.Image, err error) {
 	// 创建画布
 	canvas := gg.NewContext(width, imgHigh)
 	// 随机背景色
-	if g.BackgroundImage == "" {
+	if c.BackgroundImage == "" {
 		canvas.DrawRectangle(0, 0, float64(width), float64(imgHigh))
 		canvas.SetRGBA255(rand.Intn(45)+165, rand.Intn(45)+165, rand.Intn(45)+165, 255)
 		canvas.Fill()
 	} else {
-		banner, err := img.LoadFirstFrame(g.BackgroundImage, width, imgHigh)
+		banner, err := img.LoadFirstFrame(c.BackgroundImage, width, imgHigh)
 		if err == nil {
 			canvas.DrawImage(img.Size(banner.Im, width, imgHigh).Im, 0, 0)
 		}
 	}
 	// 标题
-	if g.CanTitleShown {
-		fontOfTitle := g.TitleFont
+	if c.CanTitleShown {
+		fontOfTitle := c.TitleFont
 		if fontOfTitle == "" {
 			return nil, ErrNilTitleFont
 		}
@@ -76,8 +76,8 @@ func (g *Card) DrawTextCard() (imgForCard image.Image, err error) {
 		}
 		canvas.SetRGB(0, 0, 0)
 		titleDx := 10.0
-		widthOfTilte, titleDy := canvas.MeasureString(g.Title)
-		switch g.TitleAlign {
+		widthOfTilte, titleDy := canvas.MeasureString(c.Title)
+		switch c.TitleAlign {
 		case NilAlign:
 		case AlignLeft:
 		case AlignCenter:
@@ -85,7 +85,7 @@ func (g *Card) DrawTextCard() (imgForCard image.Image, err error) {
 		case AlignRight:
 			titleDx = float64(width) - widthOfTilte
 		}
-		canvas.DrawString(g.Title, titleDx, titleDy+10)
+		canvas.DrawString(c.Title, titleDx, titleDy+10)
 		// 画横线
 		canvas.DrawRoundedRectangle(10, 115, 580, 10, 2.5)
 		canvas.SetRGB(0, 0, 0)
