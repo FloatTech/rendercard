@@ -3,7 +3,7 @@ package rendercard
 import (
 	"image/color"
 
-	"github.com/Coloured-glaze/gg"
+	"github.com/FloatTech/gg"
 	"github.com/disintegration/imaging"
 )
 

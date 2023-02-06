@@ -6,7 +6,7 @@ import (
 	"image/png"
 	"testing"
 
-	"github.com/Coloured-glaze/gg"
+	"github.com/FloatTech/gg"
 	"github.com/stretchr/testify/assert"
 )
 

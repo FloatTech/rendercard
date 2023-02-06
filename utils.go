@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"strings"
 
-	"github.com/Coloured-glaze/gg"
+	"github.com/FloatTech/gg"
 )
 
 // Fillet 将矩形图片裁切为圆角矩形

@@ -3,7 +3,7 @@ package rendercard
 import (
 	"image"
 
-	"github.com/Coloured-glaze/gg"
+	"github.com/FloatTech/gg"
 	"github.com/FloatTech/zbputils/img"
 )
 
