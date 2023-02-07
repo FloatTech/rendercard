@@ -4,7 +4,7 @@ import (
 	"image"
 
 	"github.com/FloatTech/gg"
-	"github.com/FloatTech/zbputils/img"
+	"github.com/FloatTech/imgfactory"
 )
 
 // DrawTitle 绘制标题
@@ -48,12 +48,12 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 	canvas.DrawStringAnchored(t.LeftSubtitle, 3+(220-(fontsize1+fontsize2)*72/96)*0.33+stringwight/2+t.OffsetX, 30+40+(220-(fontsize1+fontsize2)*72/96)*0.66+fontsize1*72/96+fontsize2*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
 	// 加载icon并绘制
-	var icon *img.Factory
-	icon, err = img.LoadFirstFrame(t.ImagePath, 220, 220)
+	var icon *imgfactory.Factory
+	icon, err = imgfactory.LoadFirstFrame(t.ImagePath, 220, 220)
 	if err != nil {
 		return
 	}
-	canvas.DrawImage(icon.Im, int(DefaultWidth)-icon.W, 40+30)
+	canvas.DrawImage(icon.Image(), int(DefaultWidth)-icon.W(), 40+30)
 	// 加载size为72的字体
 	fontsize1 = 72 + t.TextFontOffsetPoint
 	err = canvas.LoadFontFace(t.TextFont, fontsize1)
@@ -61,9 +61,9 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 		return
 	}
 	stringwight, _ = canvas.MeasureString(t.RightTitle)
-	canvas.DrawStringAnchored(t.RightTitle, DefaultWidth-25-float64(icon.W)-stringwight/2+t.OffsetX, 30+40+(220-fontsize1*72/96*2)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
+	canvas.DrawStringAnchored(t.RightTitle, DefaultWidth-25-float64(icon.W())-stringwight/2+t.OffsetX, 30+40+(220-fontsize1*72/96*2)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 	stringwight, _ = canvas.MeasureString(t.RightSubtitle)
-	canvas.DrawStringAnchored(t.RightSubtitle, DefaultWidth-25-float64(icon.W)-stringwight/2+t.OffsetX, 30+40+(220-fontsize1*72/96*2)*0.66+fontsize1*72/96*1.5+t.OffsetY, 0.5, 0.5)
+	canvas.DrawStringAnchored(t.RightSubtitle, DefaultWidth-25-float64(icon.W())-stringwight/2+t.OffsetX, 30+40+(220-fontsize1*72/96*2)*0.66+fontsize1*72/96*1.5+t.OffsetY, 0.5, 0.5)
 
 	imgs = canvas.Image()
 	return
@@ -83,12 +83,12 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	canvas.Clear()
 
 	// 加载icon
-	var icon *img.Factory
-	icon, err = img.LoadFirstFrame(t.ImagePath, 512, 512)
+	var icon *imgfactory.Factory
+	icon, err = imgfactory.LoadFirstFrame(t.ImagePath, 512, 512)
 	if err != nil {
 		return
 	}
-	canvas.DrawImage(icon.Im, DefaultWidth-icon.W, imgh-icon.H)
+	canvas.DrawImage(icon.Image(), DefaultWidth-icon.W(), imgh-icon.H())
 
 	// 加载size为108的字体
 	fontsize1, fontsize2 := 108.0+t.TitleFontOffsetPoint, 54.0+t.TextFontOffsetPoint
@@ -154,10 +154,10 @@ func (t *Title) DrawCard() (imgs image.Image, err error) {
 	recw, rech := 384.0, 256.0
 	canvas := gg.NewContext(int(recw), int(rech))
 	// 绘制图片
-	var banner *img.Factory
-	banner, err = img.LoadFirstFrame(t.ImagePath, int(recw)*2, int(rech)*2)
+	var banner *imgfactory.Factory
+	banner, err = imgfactory.LoadFirstFrame(t.ImagePath, int(recw)*2, int(rech)*2)
 	if err == nil {
-		canvas.DrawImage(img.Size(banner.Im, int(recw), int(rech)).Im, 0, 0)
+		canvas.DrawImage(imgfactory.Size(banner.Image(), int(recw), int(rech)).Image(), 0, 0)
 	} else {
 		canvas.DrawRectangle(0, 0, recw, rech)
 		canvas.SetRGB255(RandJPColor())

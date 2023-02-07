@@ -8,8 +8,7 @@ import (
 	"strings"
 
 	"github.com/FloatTech/gg"
-	"github.com/FloatTech/zbputils/img"
-	"github.com/FloatTech/zbputils/img/text"
+	"github.com/FloatTech/imgfactory"
 )
 
 var (
@@ -37,7 +36,7 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 	} else {
 		textString = strings.Join(c.Text, " ")
 	}
-	textImg, err := text.Render(textString, fontOfText, width-80, 38)
+	textImg, err := imgfactory.RenderText(textString, fontOfText, width-80, 38)
 	if err != nil {
 		return
 	}
@@ -59,9 +58,9 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 		canvas.SetRGBA255(rand.Intn(45)+165, rand.Intn(45)+165, rand.Intn(45)+165, 255)
 		canvas.Fill()
 	} else {
-		banner, err := img.LoadFirstFrame(c.BackgroundImage, width, imgHigh)
+		banner, err := imgfactory.LoadFirstFrame(c.BackgroundImage, width, imgHigh)
 		if err == nil {
-			canvas.DrawImage(img.Size(banner.Im, width, imgHigh).Im, 0, 0)
+			canvas.DrawImage(imgfactory.Size(banner.Image(), width, imgHigh).Image(), 0, 0)
 		}
 	}
 	// 标题
