@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/FloatTech/gg v1.1.2
-	github.com/FloatTech/imgfactory v0.2.2-0.20230210060541-5a6729f41b70
+	github.com/FloatTech/imgfactory v0.2.2-0.20230210061338-8185b8d2530d
 	github.com/disintegration/imaging v1.6.2
 	github.com/stretchr/testify v1.8.1
 )

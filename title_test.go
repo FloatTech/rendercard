@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"image/png"
+	"os"
 	"testing"
 
 	"github.com/FloatTech/gg"
@@ -11,14 +12,22 @@ import (
 )
 
 func TestDrawTitle(t *testing.T) {
+	glows, err := os.ReadFile("GlowSansSC-Normal-ExtraBold.ttf")
+	if err != nil {
+		t.Fatal(err)
+	}
+	impact, err := os.ReadFile("Impact.ttf")
+	if err != nil {
+		t.Fatal(err)
+	}
 	img, err := (&Title{
 		Line:          0,
 		LeftTitle:     "服务列表",
 		LeftSubtitle:  "service_list",
 		RightTitle:    "FloatTech",
 		RightSubtitle: "ZeroBot-Plugin",
-		TitleFont:     "GlowSansSC-Normal-ExtraBold.ttf",
-		TextFont:      "Impact.ttf",
+		TitleFontData: glows,
+		TextFontData:  impact,
 		ImagePath:     ".github/warma.png",
 	}).DrawTitle()
 	if err != nil {
@@ -37,6 +46,14 @@ func TestDrawTitle(t *testing.T) {
 }
 
 func TestDrawTitleWithText(t *testing.T) {
+	glows, err := os.ReadFile("GlowSansSC-Normal-ExtraBold.ttf")
+	if err != nil {
+		t.Fatal(err)
+	}
+	impact, err := os.ReadFile("Impact.ttf")
+	if err != nil {
+		t.Fatal(err)
+	}
 	img, err := (&Title{
 		Line:          0,
 		IsEnabled:     true,
@@ -44,8 +61,8 @@ func TestDrawTitleWithText(t *testing.T) {
 		LeftSubtitle:  "简介",
 		RightTitle:    "FloatTech",
 		RightSubtitle: "ZeroBot-Plugin",
-		TitleFont:     "Impact.ttf",
-		TextFont:      "GlowSansSC-Normal-ExtraBold.ttf",
+		TitleFontData: impact,
+		TextFontData:  glows,
 		ImagePath:     ".github/warma.png",
 	}).DrawTitleWithText([]string{"one", "two", "san", "si"})
 	if err != nil {
@@ -64,13 +81,21 @@ func TestDrawTitleWithText(t *testing.T) {
 }
 
 func TestDrawCard(t *testing.T) {
+	glows, err := os.ReadFile("GlowSansSC-Normal-ExtraBold.ttf")
+	if err != nil {
+		t.Fatal(err)
+	}
+	impact, err := os.ReadFile("Impact.ttf")
+	if err != nil {
+		t.Fatal(err)
+	}
 	img, err := (&Title{
 		Line:                 0,
 		IsEnabled:            true,
 		LeftTitle:            "ServiceName",
 		LeftSubtitle:         "简介",
-		TitleFont:            "Impact.ttf",
-		TextFont:             "GlowSansSC-Normal-ExtraBold.ttf",
+		TitleFontData:        impact,
+		TextFontData:         glows,
 		ImagePath:            ".github/warma.png",
 		TitleFontOffsetPoint: -6,
 		TextFontOffsetPoint:  -6,

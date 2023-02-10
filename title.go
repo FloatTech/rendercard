@@ -26,7 +26,7 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 
 	fontsize1, fontsize2 := 108.0+t.TitleFontOffsetPoint, 54.0+t.TextFontOffsetPoint
 	// 加载size为108的字体
-	err = canvas.LoadFontFace(t.TitleFont, fontsize1)
+	err = canvas.ParseFontFace(t.TitleFontData, fontsize1)
 	if err != nil {
 		return
 	}
@@ -37,7 +37,7 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 	canvas.DrawStringAnchored(t.LeftTitle, (220-(fontsize1+fontsize2)*72/96)*0.33+stringwight/2+t.OffsetX, 30+40+(220-(fontsize1+fontsize2)*72/96)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
 	// 加载size为54的字体
-	err = canvas.LoadFontFace(t.TextFont, fontsize2)
+	err = canvas.ParseFontFace(t.TextFontData, fontsize2)
 	if err != nil {
 		return
 	}
@@ -56,7 +56,7 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 	canvas.DrawImage(icon.Image(), int(DefaultWidth)-icon.W(), 40+30)
 	// 加载size为72的字体
 	fontsize1 = 72 + t.TextFontOffsetPoint
-	err = canvas.LoadFontFace(t.TextFont, fontsize1)
+	err = canvas.ParseFontFace(t.TextFontData, fontsize1)
 	if err != nil {
 		return
 	}
@@ -92,7 +92,7 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 
 	// 加载size为108的字体
 	fontsize1, fontsize2 := 108.0+t.TitleFontOffsetPoint, 54.0+t.TextFontOffsetPoint
-	err = canvas.LoadFontFace(t.TitleFont, fontsize1)
+	err = canvas.ParseFontFace(t.TitleFontData, fontsize1)
 	if err != nil {
 		return
 	}
@@ -104,7 +104,7 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	canvas.DrawStringAnchored(t.LeftTitle, 25+stringwight/2+t.OffsetX, 25+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
 	// 加载size为54的字体
-	err = canvas.LoadFontFace(t.TextFont, fontsize2)
+	err = canvas.ParseFontFace(t.TextFontData, fontsize2)
 	if err != nil {
 		return
 	}
@@ -124,7 +124,7 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	canvas.SetRGBA255(15, 15, 15, 255)
 
 	// 加载size为54的字体
-	err = canvas.LoadFontFace(t.TitleFont, fontsize2)
+	err = canvas.ParseFontFace(t.TitleFontData, fontsize2)
 	if err != nil {
 		return
 	}
@@ -135,7 +135,7 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	canvas.DrawStringAnchored(t.RightSubtitle, DefaultWidth-40-stringwight/2+t.OffsetX, 40+25+fontsize2*72/96*1.5+t.OffsetY, 0.5, 0.5)
 
 	// 加载size为38的字体
-	err = canvas.LoadFontFace(t.TextFont, 38+t.TextFontOffsetPoint)
+	err = canvas.ParseFontFace(t.TextFontData, 38+t.TextFontOffsetPoint)
 	if err != nil {
 		return
 	}
@@ -174,13 +174,13 @@ func (t *Title) DrawCard() (imgs image.Image, err error) {
 	// 绘制插件信息
 	canvas.SetRGBA255(240, 240, 240, 255)
 	fontsize1, fontsize2 := 64.0+t.TitleFontOffsetPoint, 32.0+t.TextFontOffsetPoint
-	err = canvas.LoadFontFace(t.TitleFont, fontsize1)
+	err = canvas.ParseFontFace(t.TitleFontData, fontsize1)
 	if err != nil {
 		return
 	}
 	canvas.DrawStringAnchored(t.LeftTitle, recw/2+t.OffsetX, rech*0.54+(rech-rech*0.54-(fontsize1+fontsize2)*72/96)*0.33+fontsize1*72/96*0.5+t.OffsetY, 0.5, 0.5)
 
-	err = canvas.LoadFontFace(t.TextFont, fontsize2)
+	err = canvas.ParseFontFace(t.TextFontData, fontsize2)
 	if err != nil {
 		return
 	}

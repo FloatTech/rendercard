@@ -26,10 +26,10 @@ type Title struct {
 	RightSubtitle string
 	// ImagePath 图片路径
 	ImagePath string
-	// TitleFont 标题字体路径
-	TitleFont string
-	// TextFont 正文字体路径
-	TextFont string
+	// TitleFont 标题字体数据
+	TitleFontData []byte
+	// TextFont 正文字体数据
+	TextFontData []byte
 	// OffsetX 文字X坐标偏移 向右为正方向
 	OffsetX float64
 	// OffsetX 文字Y坐标偏移 向下为正方向
@@ -74,10 +74,10 @@ type Card struct {
 	Height int
 	// BackgroundImage 背景图
 	BackgroundImage string
-	// TitleFont 标题字体
-	TitleFont string
-	// TextFont 正文字体
-	TextFont string
+	// TitleFontData 标题字体数据
+	TitleFontData []byte
+	// TextFontData 正文字体数据
+	TextFontData []byte
 	// Title 标题内容
 	Title string
 	// CanTitleShown 是否显示标题

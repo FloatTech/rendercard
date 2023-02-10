@@ -24,9 +24,7 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 	if width == 0 {
 		width = 600
 	}
-	// 根据宽度获取高度
-	fontOfText := c.TextFont
-	if fontOfText == "" {
+	if c.TextFontData == nil {
 		return nil, ErrNilTextFont
 	}
 	// 正文数据
@@ -36,7 +34,7 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 	} else {
 		textString = strings.Join(c.Text, " ")
 	}
-	textImg, err := imgfactory.RenderText(textString, fontOfText, width-80, 38)
+	textImg, err := imgfactory.RenderTextWith(textString, c.TextFontData, width-80, 38)
 	if err != nil {
 		return
 	}
@@ -65,11 +63,10 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 	}
 	// 标题
 	if c.CanTitleShown {
-		fontOfTitle := c.TitleFont
-		if fontOfTitle == "" {
+		if c.TitleFontData == nil {
 			return nil, ErrNilTitleFont
 		}
-		err = canvas.LoadFontFace(fontOfTitle, 103)
+		err = canvas.ParseFontFace(c.TitleFontData, 103)
 		if err != nil {
 			return
 		}
