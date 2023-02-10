@@ -43,9 +43,9 @@ func Transparency(dst image.Image, magnification float64) image.Image {
 }
 
 // Truncate 截断文字
-func Truncate(fontfile string, texts []string, maxW, fontsize float64) (newtexts []string, err error) {
+func Truncate(fontdata []byte, texts []string, maxW, fontsize float64) (newtexts []string, err error) {
 	one := gg.NewContext(1, 1)
-	err = one.LoadFontFace(fontfile, fontsize)
+	err = one.ParseFontFace(fontdata, fontsize)
 	if err != nil {
 		return
 	}

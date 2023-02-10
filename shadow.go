@@ -25,16 +25,16 @@ func DrawShadowedRectangle(canvas *gg.Context, x, y, w, h, r, sigma float64, ox,
 }
 
 // DrawShadowedString 绘制带阴影的文字
-func DrawShadowedString(canvas *gg.Context, s, fontfile string, x, y, point, sigma float64, ox, oy int, stringcolor, shadowcolor color.Color) (err error) {
+func DrawShadowedString(canvas *gg.Context, s string, fontdata []byte, x, y, point, sigma float64, ox, oy int, stringcolor, shadowcolor color.Color) (err error) {
 	one := gg.NewContext(canvas.W(), canvas.H())
-	err = one.LoadFontFace(fontfile, point)
+	err = one.ParseFontFace(fontdata, point)
 	if err != nil {
 		return
 	}
 	one.SetColor(shadowcolor)
 	one.DrawString(s, x, y)
 	canvas.DrawImage(imaging.Blur(one.Image(), sigma), ox, oy)
-	err = canvas.LoadFontFace(fontfile, point)
+	err = canvas.ParseFontFace(fontdata, point)
 	if err != nil {
 		return
 	}
@@ -44,16 +44,16 @@ func DrawShadowedString(canvas *gg.Context, s, fontfile string, x, y, point, sig
 }
 
 // DrawShadowedStringAnchored 在锚点上绘制带阴影的文字
-func DrawShadowedStringAnchored(canvas *gg.Context, s, fontfile string, x, y, point, sigma float64, ox, oy int, stringcolor, shadowcolor color.Color, ax, ay float64) (err error) {
+func DrawShadowedStringAnchored(canvas *gg.Context, s string, fontdata []byte, x, y, point, sigma float64, ox, oy int, stringcolor, shadowcolor color.Color, ax, ay float64) (err error) {
 	one := gg.NewContext(canvas.W(), canvas.H())
-	err = one.LoadFontFace(fontfile, point)
+	err = one.ParseFontFace(fontdata, point)
 	if err != nil {
 		return
 	}
 	one.SetColor(shadowcolor)
 	one.DrawStringAnchored(s, x, y, ax, ay)
 	canvas.DrawImage(imaging.Blur(one.Image(), sigma), ox, oy)
-	err = canvas.LoadFontFace(fontfile, point)
+	err = canvas.ParseFontFace(fontdata, point)
 	if err != nil {
 		return
 	}
