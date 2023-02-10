@@ -3,8 +3,8 @@ module github.com/FloatTech/rendercard
 go 1.19
 
 require (
-	github.com/FloatTech/gg v1.1.0
-	github.com/FloatTech/imgfactory v0.2.1
+	github.com/FloatTech/gg v1.1.2
+	github.com/FloatTech/imgfactory v0.2.2-0.20230210060541-5a6729f41b70
 	github.com/disintegration/imaging v1.6.2
 	github.com/stretchr/testify v1.8.1
 )
