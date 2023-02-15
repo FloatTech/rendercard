@@ -1,9 +1,7 @@
 github.com/FloatTech/gg v1.1.2 h1:YolgOYg3uDHc1+g0bLtt6QuRA/pvLn+b9IBCIhOOX88=
 github.com/FloatTech/gg v1.1.2/go.mod h1:uzPzAeT35egARdRuu+1oyjU3CmTwCceoq3Vvje7LpcI=
-github.com/FloatTech/imgfactory v0.2.2-0.20230210060541-5a6729f41b70 h1:dcfpLuiyTXPqdzX3yTaFZws6n6+nVPTgT1g3bRw28EM=
-github.com/FloatTech/imgfactory v0.2.2-0.20230210060541-5a6729f41b70/go.mod h1:el5hGpj1C1bDRxcTXYRwEivDCr40zZeJpcrLrB1fajs=
-github.com/FloatTech/imgfactory v0.2.2-0.20230210061338-8185b8d2530d h1:IXMCRBkhSksAkhEJgDtC1KxiDii3cSrnZ+nQtSLRaK0=
-github.com/FloatTech/imgfactory v0.2.2-0.20230210061338-8185b8d2530d/go.mod h1:el5hGpj1C1bDRxcTXYRwEivDCr40zZeJpcrLrB1fajs=
+github.com/FloatTech/imgfactory v0.2.2-0.20230215052637-9f7b05520ca9 h1:Havq0z/N79KeD50L7ms+Hv8F4Sw98Dt8lXM8jECp04o=
+github.com/FloatTech/imgfactory v0.2.2-0.20230215052637-9f7b05520ca9/go.mod h1:el5hGpj1C1bDRxcTXYRwEivDCr40zZeJpcrLrB1fajs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
