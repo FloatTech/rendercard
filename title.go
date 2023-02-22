@@ -87,7 +87,7 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 	}
 	sc := 0.0
 	if float64(icon.Bounds().Dy())/float64(icon.Bounds().Dx()) >= 1 {
-		sc = 512 / float64(icon.Bounds().Dy())
+		sc = DefaultWidth / 2 / float64(icon.Bounds().Dy())
 	} else {
 		sc = DefaultWidth / 2 / float64(icon.Bounds().Dx())
 	}
