@@ -9,24 +9,12 @@ import (
 )
 
 // Fillet 将矩形图片裁切为圆角矩形
-func Fillet(dst image.Image, r int) image.Image {
-	dstr := gg.ImageToNRGBA(dst)
-	mx, my := dst.Bounds().Max.X, dst.Bounds().Max.Y
-	var xx, yy, rr float64
-	for y := 0; y < my/2; y++ {
-		for x := 0; x < mx/2; x++ {
-			if x <= r && y <= r {
-				xx, yy, rr = float64(r-x), float64(y-r), float64(r)
-				if xx*xx+yy*yy >= rr*rr {
-					dstr.Set(x, y, color.NRGBA{})
-					dstr.Set(mx-1-x, y, color.NRGBA{})
-					dstr.Set(x, my-1-y, color.NRGBA{})
-					dstr.Set(mx-1-x, my-1-y, color.NRGBA{})
-				}
-			}
-		}
-	}
-	return dstr
+func Fillet(dst image.Image, r float64) image.Image {
+	canvas := gg.NewContext(dst.Bounds().Dx(), dst.Bounds().Dy())
+	canvas.DrawRoundedRectangle(0, 0, float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy()), r)
+	canvas.Clip()
+	canvas.DrawImage(dst, 0, 0)
+	return canvas.Image()
 }
 
 // Transparency 更改透明度 magnification 倍率值

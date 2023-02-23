@@ -5,10 +5,8 @@ import (
 	"errors"
 	"image"
 	"math/rand"
-	"strings"
 
 	"github.com/FloatTech/gg"
-	"github.com/FloatTech/imgfactory"
 )
 
 var (
@@ -28,24 +26,18 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 		return nil, ErrNilTextFont
 	}
 	// 正文数据
-	textString := ""
-	if c.IsTextSplitPerElement {
-		textString = strings.Join(c.Text, "\n")
-	} else {
-		textString = strings.Join(c.Text, " ")
-	}
-	textImg, err := imgfactory.RenderTextWith(textString, c.TextFontData, width-80, 38)
+	texts, err := Truncate(c.TextFontData, c.Text, float64(width)-80, 38)
 	if err != nil {
 		return
 	}
-	textHigh := textImg.Bounds().Dy()
+	textHigh := float64(len(texts)+1) * 38 * 72 / 96 * 1.5
 	// 计算图片高度
 	imgHigh := c.Height
 	if imgHigh == 0 {
 		if c.CanTitleShown {
-			imgHigh = 30 + 100 + textHigh + 20
+			imgHigh = 30 + 100 + int(textHigh) + 20
 		} else {
-			imgHigh = 20 + textHigh + 20
+			imgHigh = 20 + int(textHigh) + 20
 		}
 	}
 	// 创建画布
@@ -56,11 +48,21 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 		canvas.SetRGBA255(rand.Intn(45)+165, rand.Intn(45)+165, rand.Intn(45)+165, 255)
 		canvas.Fill()
 	} else {
-		banner, err := imgfactory.LoadFirstFrame(c.BackgroundImage, width, imgHigh)
+		banner, err := gg.LoadImage(c.BackgroundImage)
 		if err == nil {
-			canvas.DrawImage(imgfactory.Size(banner.Image(), width, imgHigh).Image(), 0, 0)
+			if float64(banner.Bounds().Dy())/float64(banner.Bounds().Dx()) < float64(canvas.H())/float64(canvas.W()) {
+				sc := float64(canvas.H()) / float64(banner.Bounds().Dy())
+				canvas.ScaleAbout(sc, sc, float64(canvas.W())/2, float64(canvas.H())/2)
+				canvas.DrawImageAnchored(banner, canvas.W()/2, canvas.H()/2, 0.5, 0.5)
+			} else {
+				sc := float64(canvas.W()) / float64(banner.Bounds().Dx())
+				canvas.Scale(sc, sc)
+				canvas.DrawImage(banner, 0, 0)
+			}
+			canvas.Identity()
 		}
 	}
+	y := 0.0
 	// 标题
 	if c.CanTitleShown {
 		if c.TitleFontData == nil {
@@ -87,10 +89,18 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 		canvas.SetRGB(0, 0, 0)
 		canvas.Fill()
 		// 内容
-		canvas.DrawImage(textImg, 10, 130)
+		y = 130 + 38*72/96*1.5
 	} else {
 		// 内容
-		canvas.DrawImage(textImg, 10, 20)
+		y = 20 + 38*72/96*1.5
+	}
+	err = canvas.ParseFontFace(c.TextFontData, 38)
+	if err != nil {
+		return
+	}
+	for _, s := range texts {
+		canvas.DrawStringAnchored(s, 10, y, 0, 0.5)
+		y += canvas.FontHeight() * 1.5
 	}
 	// 制图
 	imgForCard = canvas.Image()

@@ -42,7 +42,7 @@ func TestDrawTitle(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "28f9f68f3ef7987a9d189b52b9a8b399", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "5450734a22186aa176387ff2a91d9a7e", hex.EncodeToString(h.Sum(nil)))
 }
 
 func TestDrawTitleWithText(t *testing.T) {
@@ -77,7 +77,7 @@ func TestDrawTitleWithText(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "bf5ce310c0a565477fa83904a506c08d", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "49c0bb06f1b8e16833e73d2bdcbe01ce", hex.EncodeToString(h.Sum(nil)))
 }
 
 func TestDrawCard(t *testing.T) {
@@ -112,5 +112,5 @@ func TestDrawCard(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, "4e1b4c439a78d833b0931655d736b02f", hex.EncodeToString(h.Sum(nil)))
+	assert.Equal(t, "deba289674306c6d674c0c07f6ae458c", hex.EncodeToString(h.Sum(nil)))
 }
