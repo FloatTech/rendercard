@@ -16,7 +16,7 @@ type plugininfo struct {
 }
 
 // RenderServerPic ...
-func RenderServerPic(pluginlist []plugininfo, torussd, glowsd, yurukasd []byte, zbplogopath string, serverlistlogo image.Image) (img image.Image, err error) {
+func RenderServerPic(pluginlist []plugininfo, torussd, glowsd []byte, zbplogopath string, serverlistlogo image.Image) (img image.Image, err error) {
 	logo, err := gg.LoadImage(zbplogopath)
 	if err != nil {
 		return
