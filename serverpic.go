@@ -10,13 +10,13 @@ import (
 )
 
 type plugininfo struct {
-	name   string
-	brief  string
-	status bool
+	Name   string
+	Brief  string
+	Status bool
 }
 
 // RenderServerPic ...
-func RenderServerPic(pluginlist []plugininfo, torussd, glowsd []byte, zbplogopath string, serverlistlogo image.Image) (img image.Image, err error) {
+func RenderServerPic(pluginlist []*plugininfo, torussd, glowsd []byte, zbplogopath string, serverlistlogo image.Image) (img image.Image, err error) {
 	logo, err := gg.LoadImage(zbplogopath)
 	if err != nil {
 		return
@@ -93,7 +93,7 @@ func RenderServerPic(pluginlist []plugininfo, torussd, glowsd []byte, zbplogopat
 	for i := 0; i < 3; i++ {
 		a := i * cardsnum
 		b := (i + 1) * cardsnum
-		go func(i int, list []plugininfo) {
+		go func(i int, list []*plugininfo) {
 			defer wg.Done()
 			cardimgs[i], err = renderinfocards(torussd, glowsd, list)
 			if err != nil {
@@ -119,7 +119,7 @@ func RenderServerPic(pluginlist []plugininfo, torussd, glowsd []byte, zbplogopat
 	return
 }
 
-func renderinfocards(torussd, glowsd []byte, plugininfos []plugininfo) (img image.Image, err error) {
+func renderinfocards(torussd, glowsd []byte, plugininfos []*plugininfo) (img image.Image, err error) {
 	w := (290+24)*3 + 24
 	cardnum := len(plugininfos)
 	h := math.Ceil(cardnum, 3) * (80 + 16)
@@ -129,7 +129,7 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []plugininfo) (img imag
 	beginw, beginh := 24.0, 0.0
 	for i := 0; i < cardnum; i++ {
 		canvas.SetRGBA255(204, 51, 51, 255)
-		if plugininfos[i].status {
+		if plugininfos[i].Status {
 			canvas.SetRGBA255(136, 178, 0, 255)
 		}
 		canvas.DrawRoundedRectangle(beginw, beginh, cardw/2, cardh, 16)
@@ -152,7 +152,7 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []plugininfo) (img imag
 	canvas.SetRGBA255(235, 235, 235, 255)
 	beginw, beginh = 24.0, 0.0
 	for i := 0; i < cardnum; i++ {
-		canvas.DrawStringAnchored(plugininfos[i].name, beginw+14, beginh+canvas.FontHeight()/2+4, 0, 0.5)
+		canvas.DrawStringAnchored(plugininfos[i].Name, beginw+14, beginh+canvas.FontHeight()/2+4, 0, 0.5)
 		beginw += cardw + spacingw
 		if (i+1)%3 == 0 {
 			beginw = spacingw
@@ -165,7 +165,7 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []plugininfo) (img imag
 	}
 	beginw, beginh = 24.0, 0.0
 	for i := 0; i < cardnum; i++ {
-		canvas.DrawStringAnchored(plugininfos[i].brief, beginw+14, beginh+cardh-canvas.FontHeight()-4, 0, 0.5)
+		canvas.DrawStringAnchored(plugininfos[i].Brief, beginw+14, beginh+cardh-canvas.FontHeight()-4, 0, 0.5)
 		beginw += cardw + spacingw
 		if (i+1)%3 == 0 {
 			beginw = spacingw
