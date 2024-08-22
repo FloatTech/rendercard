@@ -9,7 +9,8 @@ import (
 	"github.com/FloatTech/gg"
 )
 
-type plugininfo struct {
+// PluginInfo ...
+type PluginInfo struct {
 	Name   string
 	Brief  string
 	Status bool
