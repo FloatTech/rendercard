@@ -17,7 +17,7 @@ type PluginInfo struct {
 }
 
 // RenderServerPic ...
-func RenderServerPic(pluginlist []*plugininfo, torussd, glowsd []byte, zbplogopath string, serverlistlogo image.Image) (img image.Image, err error) {
+func RenderServerPic(pluginlist []*PluginInfo, torussd, glowsd []byte, zbplogopath string, serverlistlogo image.Image) (img image.Image, err error) {
 	logo, err := gg.LoadImage(zbplogopath)
 	if err != nil {
 		return
@@ -94,7 +94,7 @@ func RenderServerPic(pluginlist []*plugininfo, torussd, glowsd []byte, zbplogopa
 	for i := 0; i < 3; i++ {
 		a := i * cardsnum
 		b := (i + 1) * cardsnum
-		go func(i int, list []*plugininfo) {
+		go func(i int, list []*PluginInfo) {
 			defer wg.Done()
 			cardimgs[i], err = renderinfocards(torussd, glowsd, list)
 			if err != nil {
@@ -120,7 +120,7 @@ func RenderServerPic(pluginlist []*plugininfo, torussd, glowsd []byte, zbplogopa
 	return
 }
 
-func renderinfocards(torussd, glowsd []byte, plugininfos []*plugininfo) (img image.Image, err error) {
+func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img image.Image, err error) {
 	w := (290+24)*3 + 24
 	cardnum := len(plugininfos)
 	h := math.Ceil(cardnum, 3) * (80 + 16)
