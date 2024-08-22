@@ -18,11 +18,11 @@ linters:
   fast: false
   enable:
     - bodyclose
-    - deadcode
-    - depguard
+    #- deadcode
+    #- depguard
     - dogsled
     - errcheck
-    - exportloopref
+    #- exportloopref
     - exhaustive
     #- funlen
     #- goconst
@@ -39,13 +39,13 @@ linters:
     - nolintlint
     - rowserrcheck
     - staticcheck
-    - structcheck
+    #- structcheck
     - stylecheck
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck
+    #- varcheck
     - whitespace
     - prealloc
     - predeclared
@@ -62,7 +62,7 @@ run:
   tests: false
   skip-dirs:
     - order
-  go: '1.19'
+  go: '1.20'
 
 # output configuration options
 output:

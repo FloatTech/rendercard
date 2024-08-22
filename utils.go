@@ -48,9 +48,9 @@ func Truncate(fontdata []byte, texts []string, maxW, fontsize float64) (newtexts
 				width, _ := one.MeasureString(tmp.String())
 				if width > maxW {
 					break
-				} else {
-					res = append(res, t)
 				}
+				res = append(res, t)
+
 			}
 			newlinetext := string(res)
 			newtexts = append(newtexts, newlinetext)
