@@ -89,13 +89,16 @@ func RenderServerPic(pluginlist []*PluginInfo, torussd, glowsd []byte, zbplogopa
 	cardimgs := make([]image.Image, 4)
 
 	wg := sync.WaitGroup{}
-	cardsnum := math.Ceil(ln, 4) * 3
+	cardsnum := ln / 4 * 3
 	wg.Add(4)
 	for i := 0; i < 3; i++ {
 		a := i * cardsnum
 		b := (i + 1) * cardsnum
 		go func(i int, list []*PluginInfo) {
 			defer wg.Done()
+			if b == 0 {
+				return
+			}
 			cardimgs[i], err = renderinfocards(torussd, glowsd, list)
 			if err != nil {
 				return
@@ -112,8 +115,10 @@ func RenderServerPic(pluginlist []*PluginInfo, torussd, glowsd []byte, zbplogopa
 	wg.Wait()
 	spacing := 0
 	for i := 0; i < len(cardimgs); i++ {
-		canvas.DrawImage(cardimgs[i], 0, serverlistlogo.Bounds().Dy()+spacing)
-		spacing += cardimgs[i].Bounds().Dy()
+		if cardimgs != nil {
+			canvas.DrawImage(cardimgs[i], 0, serverlistlogo.Bounds().Dy()+spacing)
+			spacing += cardimgs[i].Bounds().Dy()
+		}
 	}
 
 	img = canvas.Image()
