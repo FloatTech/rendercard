@@ -87,7 +87,10 @@ func DrawRankingCard(fontdata []byte, title string, toplefttext, bottomlefttext,
 	canvas.ParseFontFace(fontdata, 32)
 	canvas.DrawStringAnchored(title, w/2, 64/2, 0.5, 0.5)
 
-	canvas.ParseFontFace(fontdata, 20)
+	err = canvas.ParseFontFace(fontdata, 20)
+	if err != nil {
+		return
+	}
 	wg.Wait()
 	for i := 0; i < 10; i++ {
 		canvas.DrawImage(cardimgs[i], 0, 0)
@@ -95,18 +98,27 @@ func DrawRankingCard(fontdata []byte, title string, toplefttext, bottomlefttext,
 	}
 
 	canvas.SetRGBA255(63, 63, 63, 255)
-	canvas.ParseFontFace(fontdata, 12)
+	err = canvas.ParseFontFace(fontdata, 12)
+	if err != nil {
+		return
+	}
 	for i := 0; i < 10; i++ {
 		canvas.DrawStringAnchored(bottomlefttext[i], 16+10+60+10, hspac+(cardspac+cardh)*float64(i)+cardh*5/8, 0, 0.5)
 	}
 	canvas.SetRGBA255(0, 0, 0, 255)
-	canvas.ParseFontFace(fontdata, 24)
+	err = canvas.ParseFontFace(fontdata, 24)
+	if err != nil {
+		return
+	}
 	for i := 0; i < 10; i++ {
 		canvas.DrawStringAnchored(righttext[i], w-16-8-50-8, hspac+(cardspac+cardh)*float64(i)+cardh/2, 1, 0.5)
 	}
 
 	canvas.SetRGBA255(255, 255, 255, 255)
-	canvas.ParseFontFace(fontdata, 28)
+	err = canvas.ParseFontFace(fontdata, 28)
+	if err != nil {
+		return
+	}
 	for i := 0; i < 10; i++ {
 		canvas.DrawStringAnchored(strconv.Itoa(i+1), w-16-8-25, hspac+(cardspac+cardh)*float64(i)+cardh/2, 0.5, 0.5)
 	}
