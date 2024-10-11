@@ -84,7 +84,10 @@ func DrawRankingCard(fontdata []byte, title string, toplefttext, bottomlefttext,
 	}
 
 	canvas.SetRGBA255(0, 0, 0, 255)
-	canvas.ParseFontFace(fontdata, 32)
+	err = canvas.ParseFontFace(fontdata, 32)
+	if err != nil {
+		return
+	}
 	canvas.DrawStringAnchored(title, w/2, 64/2, 0.5, 0.5)
 
 	err = canvas.ParseFontFace(fontdata, 20)
