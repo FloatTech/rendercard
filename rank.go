@@ -100,7 +100,7 @@ func DrawRankingCard(fontdata []byte, title string, rankinfo []*RankInfo) (img i
 	}
 	canvas.DrawStringAnchored(title, w/2, 64/2, 0.5, 0.5)
 
-	err = canvas.ParseFontFace(fontdata, 20)
+	err = canvas.ParseFontFace(fontdata, 22)
 	if err != nil {
 		return
 	}
@@ -119,7 +119,7 @@ func DrawRankingCard(fontdata []byte, title string, rankinfo []*RankInfo) (img i
 		canvas.DrawStringAnchored(rankinfo[i].BottomLeftText, wspac+10+60+10, hspac+float64((cardspac+cardh)*i+cardh*5/8), 0, 0.5)
 	}
 	canvas.SetRGBA255(0, 0, 0, 255)
-	err = canvas.ParseFontFace(fontdata, 24)
+	err = canvas.ParseFontFace(fontdata, 20)
 	if err != nil {
 		return
 	}
