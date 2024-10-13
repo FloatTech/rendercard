@@ -64,7 +64,7 @@ func DrawRankingCard(fontdata []byte, title string, rankinfo []*RankInfo) (img i
 
 			card.ScaleAbout(float64(cardw)/2/float64(avatar.Bounds().Dx()), float64(cardw)/2/float64(avatar.Bounds().Dy()), wspac, float64(cardh)/2)
 
-			card.DrawImageAnchored(avatar, 0, cardh/2, 0, 0.5)
+			card.DrawImageAnchored(avatar, int(wspac), cardh/2, 0, 0.5)
 			card.Identity()
 			card.ResetClip()
 
