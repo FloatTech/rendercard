@@ -3,7 +3,6 @@ package rendercard
 import (
 	"image"
 	"image/color"
-	"math/rand"
 	"sync"
 
 	"github.com/FloatTech/floatbox/math"
@@ -143,9 +142,9 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img ima
 		fade.AddColorStop(0.7, color.NRGBA{204, 51, 51, 63})
 		fade.AddColorStop(0.6, color.NRGBA{204, 51, 51, 0})
 		fade.AddColorStop(0, color.NRGBA{204, 51, 51, 0})
-		statusimage := drawEnableOrDisableImage(false)
+		statusimage := drawEnableOrDisableImage(plugininfos[i].Status)
 
-		if plugininfos[i].Status && rand.Intn(2) == 0 {
+		if plugininfos[i].Status {
 			canvas.SetRGBA255(136, 178, 0, 255)
 			fade = gg.NewLinearGradient(beginw+10, 0, beginw+cardw-10, 0)
 			fade.AddColorStop(1, color.NRGBA{136, 178, 0, 255})
@@ -153,7 +152,7 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img ima
 			fade.AddColorStop(0.7, color.NRGBA{136, 178, 0, 63})
 			fade.AddColorStop(0.6, color.NRGBA{136, 178, 0, 0})
 			fade.AddColorStop(0, color.NRGBA{136, 178, 0, 0})
-			statusimage = drawEnableOrDisableImage(true)
+			statusimage = drawEnableOrDisableImage(plugininfos[i].Status)
 		}
 
 		canvas.DrawRoundedRectangle(beginw+10, beginh, cardw-10, cardh, 16)
