@@ -62,6 +62,23 @@ func RenderServerListLogo(fontdata []byte) (img image.Image, err error) {
 	canvas.DrawImage(strokedimg, -3, 3)
 	canvas.DrawImage(coloredimg, 0, 0)
 
+	shadowcanvas := gg.NewContext(w, h)
+	
+	err =shadowcanvas.SetMask(canvas.AsMask())
+	if err != nil {
+		return
+	}
+	shadowcanvas.DrawRectangle(0, 0, float64(shadowcanvas.W()), float64(shadowcanvas.H()))
+	shadowcanvas.SetRGBA255(0, 0, 0, 255)
+	shadowcanvas.Fill()
+
+	err =canvas.SetMask(canvas.AsMask())
+	if err != nil {
+		return
+	}
+	canvas.InvertMask()
+	canvas.DrawImage(shadowcanvas.Image(), 3, 4)
+
 	img = canvas.Image()
 	return
 }

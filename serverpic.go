@@ -2,6 +2,8 @@ package rendercard
 
 import (
 	"image"
+	"image/color"
+	"math/rand"
 	"sync"
 
 	"github.com/FloatTech/floatbox/math"
@@ -135,15 +137,63 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img ima
 	beginw, beginh := 24.0, 0.0
 	for i := 0; i < cardnum; i++ {
 		canvas.SetRGBA255(204, 51, 51, 255)
-		if plugininfos[i].Status {
+		fade := gg.NewLinearGradient(beginw+10, 0, beginw+cardw-10, 0)
+		fade.AddColorStop(1, color.NRGBA{204, 51, 51, 255})
+		fade.AddColorStop(0.8, color.NRGBA{204, 51, 51, 191})
+		fade.AddColorStop(0.7, color.NRGBA{204, 51, 51, 63})
+		fade.AddColorStop(0.6, color.NRGBA{204, 51, 51, 0})
+		fade.AddColorStop(0, color.NRGBA{204, 51, 51, 0})
+		statusimage := drawEnableOrDisableImage(false)
+
+		if plugininfos[i].Status && rand.Intn(2) == 0 {
 			canvas.SetRGBA255(136, 178, 0, 255)
+			fade = gg.NewLinearGradient(beginw+10, 0, beginw+cardw-10, 0)
+			fade.AddColorStop(1, color.NRGBA{136, 178, 0, 255})
+			fade.AddColorStop(0.8, color.NRGBA{136, 178, 0, 191})
+			fade.AddColorStop(0.7, color.NRGBA{136, 178, 0, 63})
+			fade.AddColorStop(0.6, color.NRGBA{136, 178, 0, 0})
+			fade.AddColorStop(0, color.NRGBA{136, 178, 0, 0})
+			statusimage = drawEnableOrDisableImage(true)
 		}
+
+		canvas.DrawRoundedRectangle(beginw+10, beginh, cardw-10, cardh, 16)
+		canvas.Clip()
+		canvas.InvertMask()
+
 		canvas.DrawRoundedRectangle(beginw, beginh, cardw/2, cardh, 16)
 		canvas.Fill()
 
-		canvas.SetRGBA255(34, 26, 33, 255)
+		canvas.ResetClip()
+
+		canvas.SetRGBA255(255, 255, 255, 217)
 		canvas.DrawRoundedRectangle(beginw+10, beginh, cardw-10, cardh, 16)
+		canvas.FillPreserve()
+		canvas.SetFillStyle(fade)
 		canvas.Fill()
+		canvas.SetFillStyle(nil)
+
+		alphacanvas := gg.NewContext(w, h)
+		alphacanvas.SetRGBA255(255, 255, 255, 93)
+		alphacanvas.Clear()
+
+		err = canvas.SetMask(alphacanvas.AsMask())
+		if err != nil {
+			return
+		}
+		canvas.DrawImageAnchored(statusimage, int(beginw+cardw)-10-5, int(beginh+cardh/2), 1, 0.5)
+		canvas.ResetClip()
+
+		err = canvas.SetMask(alphacanvas.AsMask())
+		if err != nil {
+			return
+		}
+		canvas.DrawRoundedRectangle(beginw+10, beginh, cardw-10, cardh, 16)
+		canvas.Clip()
+		canvas.DrawCircle(beginw+cardw-10-5-50/2, beginh+cardh/2, float64(cardh-10)/2)
+		canvas.SetLineWidth(50 * 0.185)
+		canvas.Stroke()
+		canvas.ResetClip()
+
 		beginw += cardw + spacingw
 		if (i+1)%3 == 0 {
 			beginw = spacingw
@@ -180,4 +230,28 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img ima
 	}
 	img = canvas.Image()
 	return
+}
+
+func drawEnableOrDisableImage(status bool) image.Image {
+	dc := gg.NewContext(50, 50)
+	dcwf, dchf := float64(dc.W()), float64(dc.H())
+	fac := 0.185
+	if status {
+		dc.RotateAbout(gg.Radians(-45), dcwf/2, dchf/2)
+		dc.DrawRectangle(dcwf*fac+dcwf*fac/2, (dchf-dchf/2)/2-1, dcwf, dcwf/2-dcwf*fac)
+		dc.Clip()
+		dc.InvertMask()
+		dc.DrawRectangle(dcwf*fac/2, (dchf-dchf/2)/2, dcwf-dcwf*fac, dchf/2)
+		dc.SetRGBA255(255, 255, 255, 255)
+		dc.Fill()
+		dc.ResetClip()
+		return dc.Image()
+	}
+	dc.RotateAbout(gg.Radians(-45), dcwf/2, dchf/2)
+	dc.DrawRectangle((dcwf-dcwf*fac)/2, 0, dcwf*fac, dchf)
+	dc.SetRGBA255(255, 255, 255, 255)
+	dc.Fill()
+	dc.DrawRectangle(0, (dcwf-dcwf*fac)/2, dchf, dcwf*fac)
+	dc.Fill()
+	return dc.Image()
 }

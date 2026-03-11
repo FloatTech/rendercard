@@ -60,10 +60,14 @@ func (t *Title) Sum64() uint64 {
 type Alignment uint8
 
 const (
-	NilAlign    Alignment = iota // NilAlign ..
-	AlignLeft                    // AlignLeft 左对齐
-	AlignCenter                  // AlignCenter 居中对齐
-	AlignRight                   // AlignRight 右对齐
+	// NilAlign 默认
+	NilAlign Alignment = iota
+	// AlignLeft 左对齐
+	AlignLeft
+	// AlignCenter 居中对齐
+	AlignCenter
+	// AlignRight 右对齐
+	AlignRight
 )
 
 // Card 卡片配置
