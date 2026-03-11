@@ -1,6 +1,6 @@
 module github.com/FloatTech/rendercard
 
-go 1.20
+go 1.24.2
 
 require (
 	github.com/FloatTech/floatbox v0.0.0-20240505082030-226ec6713e14
