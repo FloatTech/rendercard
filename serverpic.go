@@ -29,8 +29,19 @@ func RenderServerPic(pluginlist []*PluginInfo, torussd, glowsd []byte, zbplogopa
 	h := serverlistlogo.Bounds().Dy() + ln*(80+16) + serverlistlogo.Bounds().Dy()/3
 	canvas := gg.NewContext(w, h)
 
+	canvas.SetRGBA255(235, 235, 235, 127)
+	canvas.Clear()
+
+	halfalphamask := canvas.AsMask()
+
 	canvas.SetRGBA255(235, 235, 235, 255)
 	canvas.Clear()
+
+	canvas.SetMask(halfalphamask)
+
+	canvas.DrawImageAnchored(logo, canvas.W()/2, canvas.H()/2, 0.5, 0.5)
+
+	canvas.ResetClip()
 
 	canvas.SetRGBA255(135, 144, 173, 255)
 	canvas.NewSubPath()
@@ -204,7 +215,7 @@ func renderinfocards(torussd, glowsd []byte, plugininfos []*PluginInfo) (img ima
 	if err != nil {
 		return
 	}
-	canvas.SetRGBA255(235, 235, 235, 255)
+	canvas.SetRGBA255(20, 20, 20, 255)
 	beginw, beginh = 24.0, 0.0
 	for i := 0; i < cardnum; i++ {
 		canvas.DrawStringAnchored(plugininfos[i].Name, beginw+14, beginh+canvas.FontHeight()/2+4, 0, 0.5)
