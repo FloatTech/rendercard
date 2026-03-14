@@ -37,7 +37,10 @@ func RenderServerPic(pluginlist []*PluginInfo, torussd, glowsd []byte, zbplogopa
 	canvas.SetRGBA255(235, 235, 235, 255)
 	canvas.Clear()
 
-	canvas.SetMask(halfalphamask)
+	err = canvas.SetMask(halfalphamask)
+	if err != nil {
+		return
+	}
 
 	canvas.DrawImageAnchored(logo, canvas.W()/2, canvas.H()/2, 0.5, 0.5)
 
