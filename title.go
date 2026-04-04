@@ -4,6 +4,7 @@ import (
 	"image"
 
 	"github.com/FloatTech/gg"
+	"github.com/FloatTech/gg/fio"
 )
 
 // DrawTitle 绘制标题
@@ -46,7 +47,7 @@ func (t *Title) DrawTitle() (imgs image.Image, err error) {
 
 	// 加载icon并绘制 高限制220
 	var icon image.Image
-	icon, err = gg.LoadImage(t.ImagePath)
+	icon, err = fio.LoadImage(t.ImagePath)
 	if err != nil {
 		return
 	}
@@ -81,7 +82,7 @@ func (t *Title) DrawTitleWithText(info []string) (imgs image.Image, err error) {
 
 	// 加载icon
 	var icon image.Image
-	icon, err = gg.LoadImage(t.ImagePath)
+	icon, err = fio.LoadImage(t.ImagePath)
 	if err != nil {
 		return
 	}
@@ -157,7 +158,7 @@ func (t *Title) DrawCard() (imgs image.Image, err error) {
 	canvas := gg.NewContext(int(recw), int(rech))
 	// 绘制图片
 	var banner image.Image
-	banner, err = gg.LoadImage(t.ImagePath)
+	banner, err = fio.LoadImage(t.ImagePath)
 	if err == nil {
 		sc := 0.0
 		if float64(banner.Bounds().Dy())/float64(banner.Bounds().Dx()) < rech/recw {

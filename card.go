@@ -7,6 +7,7 @@ import (
 	"math/rand"
 
 	"github.com/FloatTech/gg"
+	"github.com/FloatTech/gg/fio"
 )
 
 var (
@@ -48,7 +49,7 @@ func (c *Card) DrawTextCard() (imgForCard image.Image, err error) {
 		canvas.SetRGBA255(rand.Intn(45)+165, rand.Intn(45)+165, rand.Intn(45)+165, 255)
 		canvas.Fill()
 	} else {
-		banner, err := gg.LoadImage(c.BackgroundImage)
+		banner, err := fio.LoadImage(c.BackgroundImage)
 		if err == nil {
 			if float64(banner.Bounds().Dy())/float64(banner.Bounds().Dx()) < float64(canvas.H())/float64(canvas.W()) {
 				sc := float64(canvas.H()) / float64(banner.Bounds().Dy())

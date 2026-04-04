@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/FloatTech/gg"
+	"github.com/FloatTech/gg/fio"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,7 +33,7 @@ func TestDrawTitle(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = gg.SavePNG(".github/DrawTitle.png", img)
+	err = fio.SavePNG(".github/DrawTitle.png", img)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func TestDrawTitleWithText(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = gg.SavePNG(".github/DrawTitleWithText.png", img)
+	err = fio.SavePNG(".github/DrawTitleWithText.png", img)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,7 +103,7 @@ func TestDrawCard(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = gg.SavePNG(".github/DrawCard.png", img)
+	err = fio.SavePNG(".github/DrawCard.png", img)
 	if err != nil {
 		t.Fatal(err)
 	}

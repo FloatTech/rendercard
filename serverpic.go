@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/FloatTech/floatbox/math"
+	"github.com/FloatTech/gg/fio"
 
 	"github.com/FloatTech/gg"
 )
@@ -19,7 +20,7 @@ type PluginInfo struct {
 
 // RenderServerPic ...
 func RenderServerPic(pluginlist []*PluginInfo, torussd, glowsd []byte, zbplogopath string, serverlistlogo image.Image) (img image.Image, err error) {
-	logo, err := gg.LoadImage(zbplogopath)
+	logo, err := fio.LoadImage(zbplogopath)
 	if err != nil {
 		return
 	}
